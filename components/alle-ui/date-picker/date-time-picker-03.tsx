@@ -33,7 +33,7 @@ import { cn } from '@/lib/utils';
 
 const FormSchema = z.object({
   datetime: z.date({
-    required_error: 'Date & time is required!.',
+    message: 'Date & time is required!.',
   }),
 });
 

@@ -1,10 +1,12 @@
-"use client";
+'use client';
 
-import type React from "react";
-import { useState } from "react";
+import type React from 'react';
+import { useState } from 'react';
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Box, Edit } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -12,10 +14,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Box, Edit } from "lucide-react";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 interface MetricCardProps {
   title: string;
@@ -38,7 +39,7 @@ function MetricCard({
   limit,
   percentage,
   status,
-  statusColor = "text-emerald-600 dark:text-emerald-400",
+  statusColor = 'text-emerald-600 dark:text-emerald-400',
   progressColor,
   details,
   actionLabel,
@@ -47,9 +48,9 @@ function MetricCard({
   onActionClick,
 }: MetricCardProps) {
   const renderProgressBar = () => {
-    if (details && title === "Commands") {
-      const writes = Number.parseInt(details[0].value.replace(/,/g, ""));
-      const reads = Number.parseInt(details[1].value.replace(/,/g, ""));
+    if (details && title === 'Commands') {
+      const writes = Number.parseInt(details[0].value.replace(/,/g, ''));
+      const reads = Number.parseInt(details[1].value.replace(/,/g, ''));
       const total = writes + reads;
       const writesPercentage = (writes / total) * 100;
       const readsPercentage = (reads / total) * 100;
@@ -92,9 +93,7 @@ function MetricCard({
           <div className="text-[1.2rem] font-medium leading-none text-foreground tabular-nums">
             {value}
           </div>
-          <div className="text-xs leading-none text-muted-foreground">
-            / {limit}
-          </div>
+          <div className="text-xs leading-none text-muted-foreground">/ {limit}</div>
         </div>
 
         <div className="mt-3">
@@ -108,9 +107,7 @@ function MetricCard({
                     key={index}
                     className="flex w-full items-center text-xs leading-none text-muted-foreground dark:text-foreground/70"
                   >
-                    <div
-                      className={`mr-[6px] h-2 w-2 rounded-full ${detail.color}`}
-                    />
+                    <div className={`mr-[6px] h-2 w-2 rounded-full ${detail.color}`} />
                     <div className="mr-1">{detail.label}</div>
                     <div className="h-[9px] flex-1 border-b-2 border-dotted border-border" />
                     <div className="ml-1 tabular-nums">{detail.value}</div>
@@ -128,9 +125,7 @@ function MetricCard({
 
           {warningMessage && (
             <div className="pt-2">
-              <div className="text-sm text-amber-700 dark:text-amber-400">
-                {warningMessage}
-              </div>
+              <div className="text-sm text-amber-700 dark:text-amber-400">{warningMessage}</div>
             </div>
           )}
         </div>
@@ -157,7 +152,7 @@ function BudgetDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
-  const [budget, setBudget] = useState("150");
+  const [budget, setBudget] = useState('150');
 
   const handleUpdate = () => {
     onOpenChange(false);
@@ -169,9 +164,8 @@ function BudgetDialog({
         <DialogHeader>
           <DialogTitle>Update budget</DialogTitle>
           <DialogDescription>
-            When your monthly cost reaches the max budget, we send an email and
-            throttle your database. You will not be charged beyond your set
-            budget for this database.
+            When your monthly cost reaches the max budget, we send an email and throttle your
+            database. You will not be charged beyond your set budget for this database.
           </DialogDescription>
         </DialogHeader>
 
@@ -180,7 +174,7 @@ function BudgetDialog({
           <Input
             id="budget"
             value={budget}
-            onChange={(e) => setBudget(e.target.value)}
+            onChange={e => setBudget(e.target.value)}
             type="number"
             placeholder="150"
           />
@@ -210,8 +204,8 @@ export default function Stats11() {
           percentage={67}
           progressColor="bg-blue-500"
           details={[
-            { label: "Writes", value: "11,276,493", color: "bg-emerald-500" },
-            { label: "Reads", value: "2,548,921", color: "bg-blue-500" },
+            { label: 'Writes', value: '11,276,493', color: 'bg-emerald-500' },
+            { label: 'Reads', value: '2,548,921', color: 'bg-blue-500' },
           ]}
           actionLabel="Upgrade"
           actionIcon={<Box className="h-4 w-4" />}
@@ -252,10 +246,7 @@ export default function Stats11() {
         />
       </div>
 
-      <BudgetDialog
-        open={budgetDialogOpen}
-        onOpenChange={setBudgetDialogOpen}
-      />
+      <BudgetDialog open={budgetDialogOpen} onOpenChange={setBudgetDialogOpen} />
     </>
   );
 }
