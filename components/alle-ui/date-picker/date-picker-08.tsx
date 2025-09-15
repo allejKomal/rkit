@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { endOfWeek, format, isWithinInterval, startOfWeek } from 'date-fns';
+import { endOfWeek, format, startOfWeek } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
