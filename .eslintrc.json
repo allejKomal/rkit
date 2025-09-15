@@ -2,6 +2,8 @@
   "extends": ["next/core-web-vitals", "plugin:prettier/recommended"],
   "plugins": ["import"],
   "rules": {
+    "@typescript-eslint/no-explicit-any": "warn",
+    "react/display-name": "warn",
     "prettier/prettier": "error",
     "import/order": [
       "error",

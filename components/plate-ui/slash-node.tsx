@@ -26,8 +26,7 @@ import { KEYS, type TComboboxInputElement } from 'platejs';
 import type { PlateEditor, PlateElementProps } from 'platejs/react';
 import { PlateElement } from 'platejs/react';
 
-import { insertBlock, insertInlineElement } from '@/components/plate/transforms';
-
+import { insertBlock, insertInlineElement } from '../plate/transforms';
 import {
   InlineCombobox,
   InlineComboboxContent,
@@ -36,7 +35,7 @@ import {
   InlineComboboxGroupLabel,
   InlineComboboxInput,
   InlineComboboxItem,
-} from '../plate-ui/inline-combobox';
+} from './inline-combobox';
 
 type Group = {
   group: string;
