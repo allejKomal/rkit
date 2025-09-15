@@ -8,11 +8,13 @@ export default function Home() {
       <div className="w-full">
         <span className="text-xl">hi how are you</span>
         <div className="flex flex-col">
-          {routeData.map((r, index) => (
-            <Link key={r} href={r} className="hover:underline">
-              {index + 1}. {r}
-            </Link>
-          ))}
+          {routeData
+            .sort((a, b) => a.localeCompare(b))
+            .map((r, index) => (
+              <Link key={index} href={r} className="hover:underline">
+                {index + 1}. {r}
+              </Link>
+            ))}
         </div>
       </div>
     </div>

@@ -9,4 +9,5 @@ export const routeData = [
   'form-layout',
   'dashboard',
   'dialog',
+  'dropdown',
 ];

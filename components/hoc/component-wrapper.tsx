@@ -1,14 +1,22 @@
 import React from 'react';
 
 import CopyToClipboardButton from '../design-system/copy-to-clipboard';
+import BlockWrapper from './block-wrapper';
 
 interface ComponentWrapperProps {
   title: string;
   path?: string;
   children: React.ReactNode;
+  block?: boolean;
 }
 
-export default function ComponentWrapper({ title, path, children }: ComponentWrapperProps) {
+export default function ComponentWrapper({
+  title,
+  path,
+  children,
+  block = false,
+}: ComponentWrapperProps) {
+  const item = <BlockWrapper>{children}</BlockWrapper>;
   return (
     <div className="relative p-2">
       <div className="absolute top-[-20px] bottom-[-20px] left-0 w-px bg-primary/20" />
@@ -16,7 +24,7 @@ export default function ComponentWrapper({ title, path, children }: ComponentWra
       <div className="absolute left-[-20px] right-[-20px] top-0 h-px bg-primary/20" />
       <div className="absolute left-[-20px] right-[-20px] bottom-0 h-px bg-primary/20" />
 
-      <div className="bg-white">
+      <div className="bg-background">
         <div className="flex justify-between items-center px-4 py-2">
           <div className="text-lg font-bold">{title}</div>
           <div className="flex gap-3">
@@ -29,7 +37,7 @@ export default function ComponentWrapper({ title, path, children }: ComponentWra
           <div className="absolute left-[-20px] right-[-20px] h-px bg-primary/20" />
         </div>
 
-        <div className="px-4 py-4">{children}</div>
+        <div className="px-4 py-4">{block ? item : children}</div>
       </div>
     </div>
   );
