@@ -24,7 +24,12 @@ export function PlateEditor() {
         }
       }
     }
-    return value; // fallback
+    return [
+      {
+        children: [{ text: '' }],
+        type: 'h1',
+      },
+    ];
   });
 
   const editor = usePlateEditor({
@@ -45,7 +50,7 @@ export function PlateEditor() {
   );
 }
 
-const value = normalizeNodeId([
+export const initialValue = normalizeNodeId([
   {
     children: [{ text: 'Welcome to the Plate Playground!' }],
     type: 'h1',
