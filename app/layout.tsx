@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist, Geist_Mono, Roboto } from 'next/font/google';
+
+import { ThemeProvider } from '@/components/provider/theme-provider';
+import { Toaster } from '@/components/ui/sonner';
 
 import './globals.css';
 
@@ -25,7 +28,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen overflow-hidden`}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+        <Toaster />
+      </body>
     </html>
   );
 }
