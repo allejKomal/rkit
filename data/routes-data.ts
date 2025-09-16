@@ -11,4 +11,5 @@ export const routeData = [
   'dialog',
   'dropdown',
   'time-line',
+  'testimonial',
 ];
