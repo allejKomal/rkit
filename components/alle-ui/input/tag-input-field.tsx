@@ -208,7 +208,16 @@ export const TagsInputField = React.forwardRef<HTMLDivElement, TagsInputProps>(
             break;
         }
       },
-      [activeIndex, value, dir, inputValue, RemoveValue, selectedValue, isValueSelected, onValueChangeHandler]
+      [
+        activeIndex,
+        value,
+        dir,
+        inputValue,
+        RemoveValue,
+        selectedValue,
+        isValueSelected,
+        onValueChangeHandler,
+      ]
     );
 
     const mousePreventDefault = React.useCallback((e: React.MouseEvent) => {

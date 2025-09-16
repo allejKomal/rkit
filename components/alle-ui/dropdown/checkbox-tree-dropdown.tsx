@@ -38,20 +38,20 @@ type CheckboxListProps = {
 };
 
 const dataValue: Item[] = [
-  { id: 1, name: 'A', parentId: 0 },
-  { id: 2, name: 'B', parentId: 0 },
-  { id: 3, name: 'C', parentId: 0 },
-  { id: 4, name: 'D', parentId: 1 },
-  { id: 5, name: 'E', parentId: 1 },
-  { id: 6, name: 'F', parentId: 2 },
-  { id: 7, name: 'G', parentId: 2 },
-  { id: 8, name: 'H', parentId: 2 },
-  { id: 9, name: 'I', parentId: 3 },
-  { id: 10, name: 'J', parentId: 3 },
-  { id: 11, name: 'K', parentId: 3 },
-  { id: 12, name: 'L', parentId: 3 },
-  { id: 13, name: 'M', parentId: 3 },
-  { id: 14, name: 'N', parentId: 3 },
+  { id: 1, name: 'Electronics', parentId: 0 },
+  { id: 2, name: 'Clothing', parentId: 0 },
+  { id: 3, name: 'Home & Kitchen', parentId: 0 },
+  { id: 4, name: 'Laptops', parentId: 1 },
+  { id: 5, name: 'Smartphones', parentId: 1 },
+  { id: 6, name: 'Tablets', parentId: 1 },
+  { id: 7, name: 'Men', parentId: 2 },
+  { id: 8, name: 'Women', parentId: 2 },
+  { id: 9, name: 'Kids', parentId: 2 },
+  { id: 10, name: 'Furniture', parentId: 3 },
+  { id: 11, name: 'Appliances', parentId: 3 },
+  { id: 12, name: 'Decor', parentId: 3 },
+  { id: 13, name: 'Kitchen Tools', parentId: 3 },
+  { id: 14, name: 'Bedding', parentId: 3 },
 ];
 
 export const updateItemStates = (oldState: ItemState[], items: Item[], clickedId: number) => {

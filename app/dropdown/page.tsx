@@ -18,17 +18,25 @@ import PageWrapper from '@/components/hoc/page-wrapper';
 export default function Page() {
   return (
     <PageWrapper>
-      <div className="p-10 flex flex-col gap-15 h-full">
-        <ComponentWrapper title="Dropdown 1" block>
+      <div className="p-10 grid grid-cols-3 gap-15 h-full">
+        <ComponentWrapper
+          title="Dropdown 1"
+          description="A simple dropdown for selecting a single option from a list."
+          block
+        >
           <Dropdown01 />
         </ComponentWrapper>
-        <ComponentWrapper title="Dropdown 2" block>
+        <ComponentWrapper
+          title="Dropdown 2"
+          description="A simple dropdown with scrollable options with buttons"
+          block
+        >
           <Dropdown02 />
         </ComponentWrapper>
-        <ComponentWrapper title="Dropdown 3" block>
+        <ComponentWrapper title="Dropdown 3" description="dropdown with search and selection" block>
           <Dropdown03 />
         </ComponentWrapper>
-        <ComponentWrapper title="Dropdown 4" block>
+        <ComponentWrapper title="Dropdown 4" description="dropdown with add new option" block>
           <Dropdown04 />
         </ComponentWrapper>
         <ComponentWrapper title="Dropdown 5" block>
@@ -37,10 +45,10 @@ export default function Page() {
         <ComponentWrapper title="Dropdown 6" block>
           <Dropdown06 />
         </ComponentWrapper>
-        <ComponentWrapper title="Dropdown 7" block>
+        <ComponentWrapper title="Dropdown 7" description="dropdown with multi selection" block>
           <Dropdown07 />
         </ComponentWrapper>
-        <ComponentWrapper title="Dropdown 8" block>
+        <ComponentWrapper title="Dropdown 8" description="dropdown with radio group" block>
           <Dropdown08 />
         </ComponentWrapper>
         <ComponentWrapper title="Dropdown 9" block>

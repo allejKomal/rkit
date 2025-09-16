@@ -5,6 +5,7 @@ import BlockWrapper from './block-wrapper';
 
 interface ComponentWrapperProps {
   title: string;
+  description?: string;
   path?: string;
   children: React.ReactNode;
   block?: boolean;
@@ -12,6 +13,7 @@ interface ComponentWrapperProps {
 
 export default function ComponentWrapper({
   title,
+  description,
   path,
   children,
   block = false,
@@ -26,7 +28,12 @@ export default function ComponentWrapper({
 
       <div className="bg-background">
         <div className="flex justify-between items-center px-4 py-2">
-          <div className="text-lg font-bold">{title}</div>
+          <div>
+            <div className="text-lg font-bold">{title}</div>
+            {description && (
+              <div className="text-xs text-muted-foreground tracking-wide">{description}</div>
+            )}
+          </div>
           <div className="flex gap-3">
             <CopyToClipboardButton text={path || 'Coming soon...'} />
             {/* <Button>Open in V0</Button> */}

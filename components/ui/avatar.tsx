@@ -39,4 +39,13 @@ function AvatarFallback({
   );
 }
 
-export { Avatar, AvatarImage, AvatarFallback };
+function AvatarExample() {
+  return (
+    <Avatar>
+      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+      <AvatarFallback>CN</AvatarFallback>
+    </Avatar>
+  );
+}
+
+export { Avatar, AvatarImage, AvatarFallback, AvatarExample };
