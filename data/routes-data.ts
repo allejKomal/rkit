@@ -13,4 +13,5 @@ export const routeData = [
   'time-line',
   'testimonial',
   'faq',
+  'team',
 ];
