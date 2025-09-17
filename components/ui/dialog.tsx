@@ -22,6 +22,15 @@ function DialogPortal({ ...props }: React.ComponentProps<typeof DialogPrimitive.
 function DialogClose({ ...props }: React.ComponentProps<typeof DialogPrimitive.Close>) {
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
 }
+function DialogCloseFull({ ...props }: React.ComponentProps<typeof DialogPrimitive.Close>) {
+  return (
+    <DialogPrimitive.Close
+      data-slot="dialog-close"
+      className={cn('flex-1', props.className)}
+      {...props}
+    />
+  );
+}
 
 function DialogOverlay({
   className,
@@ -119,6 +128,7 @@ function DialogDescription({
 export {
   Dialog,
   DialogClose,
+  DialogCloseFull,
   DialogContent,
   DialogDescription,
   DialogFooter,

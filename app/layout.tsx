@@ -11,7 +11,7 @@ const geistSans = Geist({
   subsets: ['latin'],
 });
 
-const geistMono = Geist_Mono({
+export const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 });
@@ -28,15 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        {/* <link
-          href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap"
-          rel="stylesheet"
-        /> */}
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen overflow-hidden`}
-      >
+      <body className={`${geistSans.className} antialiased h-screen overflow-hidden`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
