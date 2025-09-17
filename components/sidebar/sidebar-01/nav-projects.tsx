@@ -8,6 +8,7 @@ import {
   Folder,
   LayoutDashboard,
   type LucideIcon,
+  LucideProps,
   Mail,
   MessageCircle,
   MessageSquare,
@@ -55,7 +56,11 @@ export function NavProjects({
   projects: {
     name: string;
     url: string;
-    icon: string;
+    icon:
+      | string
+      | React.ForwardRefExoticComponent<
+          Omit<LucideProps, 'ref'> & React.RefAttributes<SVGSVGElement>
+        >;
   }[];
 }) {
   const { isMobile } = useSidebar();
@@ -65,7 +70,7 @@ export function NavProjects({
       <SidebarGroupLabel>Projects</SidebarGroupLabel>
       <SidebarMenu>
         {projects.map(item => {
-          const Icon = iconMap[item.icon];
+          const Icon = iconMap[item.icon as string];
 
           return (
             <SidebarMenuItem key={item.name}>
