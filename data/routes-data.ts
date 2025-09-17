@@ -14,4 +14,5 @@ export const routeData = [
   'testimonial',
   'faq',
   'team',
+  'avatar',
 ];
