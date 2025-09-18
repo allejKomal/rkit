@@ -3,7 +3,7 @@
 import * as React from 'react';
 
 import { Command as CommandPrimitive } from 'cmdk';
-import { SearchIcon } from 'lucide-react';
+import { SearchIcon, Settings2 } from 'lucide-react';
 
 import {
   Dialog,
@@ -73,6 +73,26 @@ function CommandInput({
         )}
         {...props}
       />
+    </div>
+  );
+}
+
+function CommandInputIcon({
+  className,
+  ...props
+}: React.ComponentProps<typeof CommandPrimitive.Input>) {
+  return (
+    <div data-slot="command-input-wrapper" className="flex items-center gap-2 px-3 h-10">
+      <CommandPrimitive.Input
+        data-slot="command-input"
+        className={cn(
+          'placeholder:text-muted-foreground flex-1 bg-transparent text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50',
+          className
+        )}
+        {...props}
+      />
+
+      <Settings2 className="size-4 shrink-0 opacity-50" />
     </div>
   );
 }
@@ -153,6 +173,7 @@ export {
   Command,
   CommandDialog,
   CommandInput,
+  CommandInputIcon,
   CommandList,
   CommandEmpty,
   CommandGroup,
