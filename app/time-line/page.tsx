@@ -1,40 +1,40 @@
 import React from 'react';
 
-import Timeline01 from '@/components/alle-ui/time-line/timeline-01';
-import Timeline02 from '@/components/alle-ui/time-line/timeline-02';
-import Timeline03 from '@/components/alle-ui/time-line/timeline-03';
-import Timeline04 from '@/components/alle-ui/time-line/timeline-04';
-import Timeline05 from '@/components/alle-ui/time-line/timeline-05';
-import Timeline06 from '@/components/alle-ui/time-line/timeline-06';
-import { Timeline07 } from '@/components/alle-ui/time-line/timeline-07';
+import TimelineBasic from '@/components/alle-ui/time-line/timeline-basic';
+import TimelineWithIcons from '@/components/alle-ui/time-line/timeline-with-icons';
+import TimelineVertical from '@/components/alle-ui/time-line/timeline-vertical';
+import TimelineHorizontal from '@/components/alle-ui/time-line/timeline-horizontal';
+import TimelineAlternating from '@/components/alle-ui/time-line/timeline-alternating';
+import TimelineWithAvatars from '@/components/alle-ui/time-line/timeline-with-avatars';
+import { TimelineMinimal } from '@/components/alle-ui/time-line/timeline-minimal';
 import ComponentWrapper from '@/components/hoc/component-wrapper';
 import PageWrapper from '@/components/hoc/page-wrapper';
 
+const components = [
+  { component: TimelineBasic, title: 'Basic Timeline', description: 'Simple vertical timeline with events' },
+  { component: TimelineWithIcons, title: 'Timeline with Icons', description: 'Timeline with icons for each event' },
+  { component: TimelineVertical, title: 'Vertical Timeline', description: 'Vertical timeline with detailed event displays' },
+  { component: TimelineHorizontal, title: 'Horizontal Timeline', description: 'Horizontal timeline layout' },
+  { component: TimelineAlternating, title: 'Alternating Timeline', description: 'Timeline with alternating event layout' },
+  { component: TimelineWithAvatars, title: 'Timeline with Avatars', description: 'Timeline featuring user avatars' },
+  { component: TimelineMinimal, title: 'Minimal Timeline', description: 'Clean minimal timeline design' },
+];
+
 export default function Page() {
   return (
-    <PageWrapper>
-      <div className="p-10 flex flex-col gap-15">
-        <ComponentWrapper title="Time Line 1">
-          <Timeline01 />
-        </ComponentWrapper>
-        <ComponentWrapper title="Time Line 2">
-          <Timeline02 />
-        </ComponentWrapper>
-        <ComponentWrapper title="Time Line 3">
-          <Timeline03 />
-        </ComponentWrapper>
-        <ComponentWrapper title="Time Line 4">
-          <Timeline04 />
-        </ComponentWrapper>
-        <ComponentWrapper title="Time Line 5">
-          <Timeline05 />
-        </ComponentWrapper>
-        <ComponentWrapper title="Time Line 6">
-          <Timeline06 />
-        </ComponentWrapper>
-        <ComponentWrapper title="Time Line 7">
-          <Timeline07 />
-        </ComponentWrapper>
+    <PageWrapper 
+      showBackButton 
+      title="Timeline Components" 
+      description="Timeline and progress display components for showing events and milestones"
+    >
+      <div className="p-10">
+        <div className="flex flex-col gap-15">
+          {components.map(({ component: Component, title, description }) => (
+            <ComponentWrapper key={title} title={title} description={description}>
+              <Component />
+            </ComponentWrapper>
+          ))}
+        </div>
       </div>
     </PageWrapper>
   );

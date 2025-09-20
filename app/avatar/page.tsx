@@ -48,13 +48,19 @@ const components = [
 
 export default function Page() {
   return (
-    <PageWrapper>
-      <div className="p-10 grid grid-cols-3 gap-15 h-full">
-        {components.map(({ component: Component, title }) => (
-          <ComponentWrapper key={title} title={title} block>
-            <Component />
-          </ComponentWrapper>
-        ))}
+    <PageWrapper 
+      showBackButton 
+      title="Avatar Components" 
+      description="User profile pictures and avatar variations with different styles and states"
+    >
+      <div className="p-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {components.map(({ component: Component, title }) => (
+            <ComponentWrapper key={title} title={title} block>
+              <Component />
+            </ComponentWrapper>
+          ))}
+        </div>
       </div>
     </PageWrapper>
   );

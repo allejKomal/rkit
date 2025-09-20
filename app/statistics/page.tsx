@@ -1,58 +1,105 @@
 import React from 'react';
 
-import Stats01 from '@/components/alle-ui/stats/stats-01';
-import Stats02 from '@/components/alle-ui/stats/stats-02';
-import Stats03 from '@/components/alle-ui/stats/stats-03';
-import Stats04 from '@/components/alle-ui/stats/stats-04';
-import Stats05 from '@/components/alle-ui/stats/stats-05';
-import Stats06 from '@/components/alle-ui/stats/stats-06';
-import Stats07 from '@/components/alle-ui/stats/stats-07';
-import Stats08 from '@/components/alle-ui/stats/stats-08';
-import Stats09 from '@/components/alle-ui/stats/stats-09';
-import Stats10 from '@/components/alle-ui/stats/stats-10';
-import Stats11 from '@/components/alle-ui/stats/stats-11';
-import Stats12 from '@/components/alle-ui/stats/stats-12';
+import StatsAdvanced from '@/components/alle-ui/stats/stats-advanced';
+import StatsAnimated from '@/components/alle-ui/stats/stats-animated';
+import StatsBasic from '@/components/alle-ui/stats/stats-basic';
+import StatsWithChart from '@/components/alle-ui/stats/stats-with-chart';
+import StatsCompact from '@/components/alle-ui/stats/stats-compact';
+import StatsComparison from '@/components/alle-ui/stats/stats-comparison';
+import StatsDashboard from '@/components/alle-ui/stats/stats-dashboard';
+import StatsGradient from '@/components/alle-ui/stats/stats-gradient';
+import StatsLarge from '@/components/alle-ui/stats/stats-large';
+import StatsMultiMetric from '@/components/alle-ui/stats/stats-multi-metric';
+import StatsProgress from '@/components/alle-ui/stats/stats-progress';
+import StatsTrend from '@/components/alle-ui/stats/stats-trend';
+import StatsWithIcon from '@/components/alle-ui/stats/stats-with-icon';
 import ComponentWrapper from '@/components/hoc/component-wrapper';
+import PageWrapper from '@/components/hoc/page-wrapper';
+
+const components = [
+  {
+    component: StatsBasic,
+    title: 'Basic Stats Card',
+    description: 'Simple statistics card with number and label',
+  },
+  {
+    component: StatsWithIcon,
+    title: 'Icon Stats Card',
+    description: 'Statistics card with icon and trend indicator',
+  },
+  {
+    component: StatsProgress,
+    title: 'Progress Stats Card',
+    description: 'Statistics card with progress bar visualization',
+  },
+  {
+    component: StatsWithChart,
+    title: 'Chart Stats Card',
+    description: 'Statistics card with mini chart visualization',
+  },
+  {
+    component: StatsComparison,
+    title: 'Comparison Stats',
+    description: 'Statistics card comparing current vs previous values',
+  },
+  {
+    component: StatsTrend,
+    title: 'Trend Stats Card',
+    description: 'Statistics card with trend arrows and percentages',
+  },
+  {
+    component: StatsCompact,
+    title: 'Compact Stats',
+    description: 'Compact version of statistics card',
+  },
+  {
+    component: StatsLarge,
+    title: 'Large Stats Card',
+    description: 'Large statistics card with detailed information',
+  },
+  {
+    component: StatsGradient,
+    title: 'Gradient Stats',
+    description: 'Statistics card with gradient background',
+  },
+  {
+    component: StatsAnimated,
+    title: 'Animated Stats',
+    description: 'Statistics card with animation effects',
+  },
+  {
+    component: StatsMultiMetric,
+    title: 'Multi Metric Stats',
+    description: 'Statistics card showing multiple metrics',
+  },
+  {
+    component: StatsDashboard,
+    title: 'Dashboard Stats',
+    description: 'Statistics card designed for dashboard layout',
+  },
+  {
+    component: StatsAdvanced,
+    title: 'Advanced Stats',
+    description: 'Advanced statistics card with multiple features',
+  },
+];
 
 export default function Page() {
   return (
-    <div className="p-10 flex flex-col gap-15">
-      <ComponentWrapper title="Statistics 1">
-        <Stats01 />
-      </ComponentWrapper>
-      <ComponentWrapper title="Statistics 2">
-        <Stats02 />
-      </ComponentWrapper>
-      <ComponentWrapper title="Statistics 3">
-        <Stats03 />
-      </ComponentWrapper>
-      <ComponentWrapper title="Statistics 4">
-        <Stats04 />
-      </ComponentWrapper>
-      <ComponentWrapper title="Statistics 5">
-        <Stats05 />
-      </ComponentWrapper>
-      <ComponentWrapper title="Statistics 6">
-        <Stats06 />
-      </ComponentWrapper>
-      <ComponentWrapper title="Statistics 7">
-        <Stats07 />
-      </ComponentWrapper>
-      <ComponentWrapper title="Statistics 8">
-        <Stats08 />
-      </ComponentWrapper>
-      <ComponentWrapper title="Statistics 9">
-        <Stats09 />
-      </ComponentWrapper>
-      <ComponentWrapper title="Statistics 10">
-        <Stats10 />
-      </ComponentWrapper>
-      <ComponentWrapper title="Statistics 11">
-        <Stats11 />
-      </ComponentWrapper>
-      <ComponentWrapper title="Statistics 12">
-        <Stats12 />
-      </ComponentWrapper>
-    </div>
+    <PageWrapper
+      showBackButton
+      title="Statistics Components"
+      description="Data visualization and statistics display components with charts and metrics"
+    >
+      <div className="p-10">
+        <div className="flex flex-col gap-15">
+          {components.map(({ component: Component, title, description }) => (
+            <ComponentWrapper key={title} title={title} description={description}>
+              <Component />
+            </ComponentWrapper>
+          ))}
+        </div>
+      </div>
+    </PageWrapper>
   );
 }
