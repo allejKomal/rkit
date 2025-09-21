@@ -46,7 +46,7 @@ export default function Page() {
             return (
               <div
                 key={block.id}
-                className="group relative overflow-hidden rounded-lg border bg-card hover:shadow-md transition-all duration-200"
+                className="group relative overflow-hidden rounded-lg border bg-card hover:shadow-lg transform-gpu hover:-translate-y-1 transition-all duration-300"
               >
                 {/* Preview Section */}
                 <div className="relative h-48 bg-muted overflow-hidden">
@@ -56,7 +56,7 @@ export default function Page() {
                   </Link>
 
                   {/* Iframe Container - Always visible */}
-                  <div className="absolute inset-0 overflow-hidden">
+                  <div className="absolute inset-0 overflow-hidden transition-transform duration-300 group-hover:scale-[1.02]">
                     <iframe
                       src={`/${block.href}`}
                       className="w-full h-full border-0 pointer-events-none"
@@ -74,13 +74,16 @@ export default function Page() {
                     />
                   </div>
 
-                  {/* Simple overlay on hover */}
+                  {/* Optional: Add a subtle overlay on hover */}
+                  <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                 </div>
 
                 {/* Content Section */}
-                <div className="p-5">
+                <div className="p-5 transition-colors duration-300 group-hover:bg-accent">
                   <div className="mb-3">
-                    <h3 className="text-base font-medium text-foreground mb-2">{block.title}</h3>
+                    <h3 className="text-base font-medium text-foreground mb-2 transition-colors duration-300 group-hover:text-primary">
+                      {block.title}
+                    </h3>
                     <p className="text-sm text-muted-foreground line-clamp-2">
                       {block.description}
                     </p>
@@ -91,7 +94,7 @@ export default function Page() {
                     {block.features.slice(0, 3).map((feature, index) => (
                       <span
                         key={index}
-                        className="px-2 py-1 text-xs bg-muted text-muted-foreground rounded"
+                        className="px-2 py-1 text-xs bg-muted text-muted-foreground rounded transition-colors duration-300 group-hover:bg-muted/80"
                       >
                         {feature}
                       </span>

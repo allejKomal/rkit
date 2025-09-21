@@ -12,23 +12,13 @@ const components = [
     title: 'Basic Card Grid',
     description: 'Simple card grid layout for collections and lists',
   },
-  {
-    component: CardGridTeam,
-    title: 'Team Card Grid',
-    description: 'Grid layout for showcasing team members with avatars',
-  },
-  {
-    component: CardGridActions,
-    title: 'Action Card Grid',
-    description: 'Grid layout for displaying action cards with icons',
-  },
 ];
 
 export default function Page() {
   return (
     <PageWrapper
       showBackButton
-      title="Card Grid Components"
+      title="Card Components"
       description="Responsive grid layouts for displaying cards and content in organized structures"
     >
       <div className="p-10">

@@ -82,7 +82,7 @@ export default function Page() {
       description="Interactive dropdown menus and selection components with various styles and functionalities"
     >
       <div className="p-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
           {components.map(({ component: Component, title, description }) => (
             <ComponentWrapper key={title} title={title} description={description} block>
               <Component />

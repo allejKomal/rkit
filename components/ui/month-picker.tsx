@@ -157,7 +157,8 @@ export default function MonthPicker({
               disabled={monthDisabled}
               className={cn(
                 'font-normal px-5 py-5',
-                isSelected && 'bg-primary text-white hover:bg-primary hover:text-white',
+                isSelected &&
+                  'bg-primary text-white hover:bg-primary hover:text-white dark:bg-primary dark:text-black dark:hover:bg-primary dark:hover:text-black',
                 monthDisabled && 'opacity-50 cursor-not-allowed'
               )}
             >
