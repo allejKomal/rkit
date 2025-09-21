@@ -4,6 +4,7 @@ import { Dialog } from '@/components/alle-ui/dialog/dialog';
 import DialogBottomAlign from '@/components/alle-ui/dialog/dialog-bottom-align';
 import DialogBottomLeftAlign from '@/components/alle-ui/dialog/dialog-bottom-left-align';
 import DialogBottomRightAlign from '@/components/alle-ui/dialog/dialog-bottom-right-align';
+import DialogCreateTask from '@/components/alle-ui/dialog/dialog-create';
 import DialogDestructive from '@/components/alle-ui/dialog/dialog-destructive';
 import DialogInviteFriends from '@/components/alle-ui/dialog/dialog-invite-friends';
 import DialogMiddleLeftAlign from '@/components/alle-ui/dialog/dialog-middle-left-align';
@@ -52,6 +53,7 @@ const components = [
   { component: DialogSlideToTop, title: 'Slide to Top Dialog' },
   { component: DialogSlideToRight, title: 'Slide to Right Dialog' },
   { component: DialogZoomIn, title: 'Zoom In Dialog' },
+  { component: DialogCreateTask, title: 'Create Task Dialog' },
 ];
 
 export default function Page() {

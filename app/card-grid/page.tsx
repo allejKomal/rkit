@@ -1,8 +1,6 @@
 import React from 'react';
 
-import CardGridActions from '@/components/alle-ui/card-grid/card-grid-actions';
 import CardGridBasic from '@/components/alle-ui/card-grid/card-grid-basic';
-import CardGridTeam from '@/components/alle-ui/card-grid/card-grid-team';
 import ComponentWrapper from '@/components/hoc/component-wrapper';
 import PageWrapper from '@/components/hoc/page-wrapper';
 

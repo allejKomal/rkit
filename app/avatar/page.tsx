@@ -8,6 +8,7 @@ import { AvatarGroupTooltip } from '@/components/alle-ui/avatar/avatar-group-too
 import { AvatarGroupTooltipTransition } from '@/components/alle-ui/avatar/avatar-group-tooltip-transition';
 import { AvatarGroupTransition } from '@/components/alle-ui/avatar/avatar-group-transition';
 import { AvatarIcon } from '@/components/alle-ui/avatar/avatar-icon';
+import AvatarInfo from '@/components/alle-ui/avatar/avatar-info';
 import { AvatarInitialsSquare } from '@/components/alle-ui/avatar/avatar-initial-square';
 import { AvatarIntials } from '@/components/alle-ui/avatar/avatar-initials';
 import { AvatarNotification } from '@/components/alle-ui/avatar/avatar-notification';
@@ -44,6 +45,7 @@ const components = [
   { component: AvatarGroupText, title: 'Avatar Group Text' },
   { component: AvatarGroupOutline, title: 'Avatar Group Outline' },
   { component: AvatarGroupDropdown, title: 'Avatar Group Dropdown' },
+  { component: AvatarInfo, title: 'Avatar Info' },
 ];
 
 export default function Page() {

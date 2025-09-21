@@ -46,6 +46,8 @@ const badgeBaseVariants = cva(
           'border-transparent bg-neutral-100 text-neutral-700 [a&]:hover:bg-neutral-600 hover:text-neutral-700',
         stone:
           'border-transparent bg-stone-100 text-stone-700 [a&]:hover:bg-stone-600 hover:text-stone-700',
+        pinkFull: 'bg-[#cd23a8] text-white [a&]:hover:bg-[#cd23a8] hover:text-white',
+        blueFull: 'bg-[#00d9f5] text-black [a&]:hover:bg-[#00d9f5] hover:text-black',
       },
     },
     defaultVariants: {
