@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { ArrowRight, ExternalLink, Play, Search, Users, Code } from 'lucide-react';
+import { Code, Search, Users } from 'lucide-react';
 
 import PageWrapper from '@/components/hoc/page-wrapper';
 
@@ -43,7 +43,6 @@ export default function Page() {
       <div className="p-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6  mx-auto">
           {blocks.map(block => {
-            const IconComponent = block.icon;
             return (
               <div
                 key={block.id}
@@ -86,7 +85,7 @@ export default function Page() {
                       {block.description}
                     </p>
                   </div>
-                  
+
                   {/* Features */}
                   <div className="flex flex-wrap gap-1.5">
                     {block.features.slice(0, 3).map((feature, index) => (

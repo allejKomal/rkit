@@ -4,8 +4,8 @@ import * as React from 'react';
 
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 
-import { cn } from '@/lib/utils';
 import { userProfile } from '@/constants';
+import { cn } from '@/lib/utils';
 
 function Avatar({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Root>) {
   return (
@@ -42,7 +42,7 @@ function AvatarFallback({
 
 function AvatarExample() {
   return (
-    <Avatar className='size-5'>
+    <Avatar className="size-5">
       <AvatarImage src={userProfile} alt="JK" />
       <AvatarFallback>JK</AvatarFallback>
     </Avatar>

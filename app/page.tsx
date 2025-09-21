@@ -1,46 +1,47 @@
 import Link from 'next/link';
-import { 
-  ArrowRight, 
-  User, 
-  Grid3X3, 
-  Calendar, 
-  MessageSquare, 
-  HelpCircle, 
-  Users, 
-  BarChart3, 
-  FileText, 
-  Clock, 
-  Layout, 
-  Settings,
-  Palette,
+
+import {
+  ArrowRight,
+  BarChart3,
+  Calendar,
+  Clock,
   Code,
-  Database
+  Database,
+  FileText,
+  Grid3X3,
+  HelpCircle,
+  Layout,
+  LucideIcon,
+  MessageSquare,
+  Settings,
+  User,
+  Users,
 } from 'lucide-react';
 
-import { routeData } from '@/data/routes-data';
 import PageWrapper from '@/components/hoc/page-wrapper';
+import { routeData } from '@/data/routes-data';
 
 // Icon mapping for each route
-const routeIcons: Record<string, any> = {
-  'avatar': User,
-  'blocks': Layout,
+const routeIcons: Record<string, LucideIcon> = {
+  avatar: User,
+  blocks: Layout,
   'blocks/editor': Code,
   'card-grid': Grid3X3,
   'date-picker': Calendar,
-  'dialog': MessageSquare,
-  'dropdown': Settings,
-  'faq': HelpCircle,
+  dialog: MessageSquare,
+  dropdown: Settings,
+  faq: HelpCircle,
   'form-layout': FileText,
-  'statistics': BarChart3,
-  'team': Users,
-  'testimonial': MessageSquare,
+  statistics: BarChart3,
+  team: Users,
+  testimonial: MessageSquare,
   'time-line': Clock,
 };
 
 export default function Home() {
   return (
-    <PageWrapper 
-      title="Component Library" 
+    <PageWrapper
+      title="Component Library"
       description="A collection of reusable UI components and layouts"
       showFooter
     >

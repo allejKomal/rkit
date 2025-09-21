@@ -48,9 +48,9 @@ const components = [
 
 export default function Page() {
   return (
-    <PageWrapper 
-      showBackButton 
-      title="Avatar Components" 
+    <PageWrapper
+      showBackButton
+      title="Avatar Components"
       description="User profile pictures and avatar variations with different styles and states"
     >
       <div className="p-10">
