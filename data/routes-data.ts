@@ -61,4 +61,11 @@ export const routeData = [
     categoryVisible: true,
     pinnedVisible: true,
   },
+  {
+    name: 'table',
+    category: 'layout',
+    pinned: false,
+    categoryVisible: true,
+    pinnedVisible: true,
+  },
 ];
