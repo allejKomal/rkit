@@ -1,20 +1,180 @@
-import React from 'react';
+import Link from 'next/link';
 
-import { column01 } from '@/components/alle-ui/table/data/column-01';
-import { data01 } from '@/components/alle-ui/table/data/data-01';
-import TableEditor from '@/components/alle-ui/table/table-editor';
+import {
+  BarChart3,
+  Database,
+  Filter,
+  Grid,
+  Pin,
+  Settings,
+  Table as TableIcon,
+  Users,
+} from 'lucide-react';
 
-function Page() {
-  const columns = column01;
-  const data = data01;
+import PageWrapper from '@/components/hoc/page-wrapper';
 
+const tableDemos = [
+  {
+    id: 'basic-table',
+    title: 'Basic Data Table',
+    description: 'Simple table for displaying tabular data.',
+    href: 'table/basic-table',
+    icon: TableIcon,
+    gradient: 'from-blue-500 to-cyan-600',
+    features: ['Sorting', 'Filtering', 'Column Resizing', 'Pagination'],
+  },
+  {
+    id: 'advanced-table',
+    title: 'Advanced Data Table',
+    description:
+      'Full-featured table with multi-row selection, column pinning, and advanced filtering options.',
+    href: 'table/advanced-table',
+    icon: Database,
+    gradient: 'from-purple-500 to-pink-600',
+    features: ['Multi-Selection', 'Column Pinning', 'Advanced Filters', 'Global Search'],
+  },
+  {
+    id: 'employee-table',
+    title: 'Employee Management',
+    description:
+      'Employee data table with comprehensive filtering, sorting, and management capabilities.',
+    href: 'table/employee-table',
+    icon: Users,
+    gradient: 'from-emerald-500 to-teal-600',
+    features: ['Employee Data', 'Role Management', 'Status Tracking', 'Bulk Actions'],
+  },
+  {
+    id: 'analytics-table',
+    title: 'Analytics Dashboard',
+    description:
+      'Data analytics table with metrics, charts integration, and real-time data visualization.',
+    href: 'table/analytics-table',
+    icon: BarChart3,
+    gradient: 'from-orange-500 to-red-600',
+    features: ['Metrics Display', 'Chart Integration', 'Real-time Data', 'Export Options'],
+  },
+  {
+    id: 'filtered-table',
+    title: 'Advanced Filtering',
+    description:
+      'Table showcasing advanced filtering capabilities with multiple filter types and combinations.',
+    href: 'table/filtered-table',
+    icon: Filter,
+    gradient: 'from-indigo-500 to-purple-600',
+    features: ['Multiple Filters', 'Filter Pills', 'Date Ranges', 'Custom Filters'],
+  },
+  {
+    id: 'pinned-table',
+    title: 'Column Pinning',
+    description:
+      'Table demonstrating column pinning functionality for better data navigation and comparison.',
+    href: 'table/pinned-table',
+    icon: Pin,
+    gradient: 'from-rose-500 to-pink-600',
+    features: ['Left Pin', 'Right Pin', 'Sticky Headers', 'Fixed Columns'],
+  },
+  {
+    id: 'grid-table',
+    title: 'Grid Layout Table',
+    description:
+      'Table with grid-based layout and responsive design for optimal viewing on different devices.',
+    href: 'table/grid-table',
+    icon: Grid,
+    gradient: 'from-cyan-500 to-blue-600',
+    features: ['Grid Layout', 'Responsive Design', 'Mobile Optimized', 'Flexible Sizing'],
+  },
+  {
+    id: 'settings-table',
+    title: 'Configuration Table',
+    description:
+      'Settings and configuration table with toggle switches, dropdowns, and interactive controls.',
+    href: 'table/settings-table',
+    icon: Settings,
+    gradient: 'from-amber-500 to-orange-600',
+    features: ['Toggle Switches', 'Dropdown Controls', 'Settings Management', 'State Persistence'],
+  },
+];
+
+export default function Page() {
   return (
-    <div className="p-10 py-16 h-screen flex flex-col">
-      <div className="flex-1 min-h-0">
-        <TableEditor columns={columns} data={data} config={{ enableMultiRowSelection: true }} />
+    <PageWrapper
+      showBackButton
+      title="Data Tables"
+      description="Advanced table components with sorting, filtering, and interactive features"
+    >
+      <div className="p-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto">
+          {tableDemos.map(table => {
+            return (
+              <div
+                key={table.id}
+                className="group relative overflow-hidden rounded-lg border bg-card hover:shadow-lg transform-gpu hover:-translate-y-1 transition-all duration-300"
+              >
+                {/* Preview Section */}
+                <div className="relative h-48 bg-muted overflow-hidden">
+                  {/* Clickable overlay for navigation */}
+                  <Link href={table.href} className="absolute inset-0 z-10">
+                    <span className="sr-only">View {table.title}</span>
+                  </Link>
+
+                  {/* Iframe Container - Always visible */}
+                  <div className="absolute inset-0 overflow-hidden transition-transform duration-300 group-hover:scale-[1.02]">
+                    <iframe
+                      src={`/${table.href}`}
+                      className="w-full h-full border-0 pointer-events-none"
+                      loading="lazy"
+                      sandbox="allow-scripts allow-same-origin"
+                      title={`Preview of ${table.title}`}
+                      style={{
+                        width: '400%',
+                        height: '400%',
+                        transform: 'scale(0.25)',
+                        transformOrigin: 'top left',
+                        minWidth: '1200px',
+                        minHeight: '800px',
+                      }}
+                    />
+                  </div>
+
+                  {/* Optional: Add a subtle overlay on hover */}
+                  <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                </div>
+
+                {/* Content Section */}
+                <div className="p-5 transition-colors duration-300 group-hover:bg-accent">
+                  <div className="mb-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div
+                        className={`p-2 rounded-lg bg-gradient-to-r ${table.gradient} text-white`}
+                      >
+                        <table.icon className="h-4 w-4" />
+                      </div>
+                      <h3 className="text-base font-medium text-foreground transition-colors duration-300 group-hover:text-primary">
+                        {table.title}
+                      </h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground line-clamp-2">
+                      {table.description}
+                    </p>
+                  </div>
+
+                  {/* Features */}
+                  <div className="flex flex-wrap gap-1.5">
+                    {table.features.slice(0, 3).map((feature, index) => (
+                      <span
+                        key={index}
+                        className="px-2 py-1 text-xs bg-muted text-muted-foreground rounded transition-colors duration-300 group-hover:bg-muted/80"
+                      >
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </PageWrapper>
   );
 }
-
-export default Page;
