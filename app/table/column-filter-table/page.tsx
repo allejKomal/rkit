@@ -9,11 +9,11 @@ import TableWrapper from '@/components/hoc/table-wrapper';
 
 function Page() {
   return (
-    <TableWrapper title="Basic Table">
+    <TableWrapper title="Column Filter Table">
       <TableEditor
         columns={superbikeColumns}
         data={superbikeData}
-        config={{ pageSize: superbikeData.length }}
+        config={{ pageSize: 15, enablePagination: true, enableColumnFilter: true }}
       />
     </TableWrapper>
   );
@@ -32,40 +32,47 @@ export const superbikeColumns: ExtendedColumnDef<Superbike>[] = [
     id: 'brand',
     header: 'Brand',
     accessorKey: 'brand',
+    enableColumnFilter: true,
   },
   {
     id: 'model',
     header: 'Model',
     accessorKey: 'model',
+    enableColumnFilter: true,
   },
   {
     id: 'engine',
     header: 'Engine',
     accessorKey: 'engine',
+    enableColumnFilter: true,
   },
   {
     id: 'power',
     header: 'Power',
     accessorKey: 'power',
     size: 100,
+    enableColumnFilter: true,
   },
   {
     id: 'torque',
     header: 'Torque',
     accessorKey: 'torque',
     size: 100,
+    enableColumnFilter: true,
   },
   {
     id: 'topSpeed',
     header: 'Top Speed',
     accessorKey: 'topSpeed',
     size: 100,
+    enableColumnFilter: true,
   },
   {
     id: 'weight',
     header: 'Weight',
     accessorKey: 'weight',
     size: 100,
+    enableColumnFilter: true,
   },
   {
     id: 'seatHeight',
@@ -90,6 +97,7 @@ export const superbikeColumns: ExtendedColumnDef<Superbike>[] = [
     header: 'Price',
     accessorKey: 'price',
     size: 100,
+    enableColumnFilter: true,
   },
   {
     id: 'year',

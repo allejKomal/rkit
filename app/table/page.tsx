@@ -21,7 +21,109 @@ const tableDemos = [
     href: 'table/basic-table',
     icon: TableIcon,
     gradient: 'from-blue-500 to-cyan-600',
-    features: ['Sorting', 'Filtering', 'Column Resizing', 'Pagination'],
+  },
+  {
+    id: 'pagination-table',
+    title: 'Pagination Table',
+    description: 'Table with pagination functionality.',
+    href: 'table/pagination-table',
+    icon: TableIcon,
+    gradient: 'from-blue-500 to-cyan-600',
+    features: ['Pagination', 'Page Size', 'Page Index', 'Page Count'],
+  },
+  {
+    id: 'sorting-table',
+    title: 'Sorting Table',
+    description: 'Table with sorting functionality.',
+    href: 'table/sorting-table',
+    icon: TableIcon,
+    gradient: 'from-blue-500 to-cyan-600',
+    features: ['Sorting', 'Sorting Icons', 'Sorting Types', 'Sorting Directions'],
+  },
+  {
+    id: 'pinning-table',
+    title: 'Pinning Table',
+    description: 'Table with pinning functionality.',
+    href: 'table/pinning-table',
+    icon: TableIcon,
+    gradient: 'from-blue-500 to-cyan-600',
+    features: ['Pinning', 'Pinning Icons', 'Pinning Types', 'Pinning Directions'],
+  },
+  {
+    id: 'resizing-table',
+    title: 'Resizing Table',
+    description: 'Table with resizable functionality.',
+    href: 'table/resizing-table',
+    icon: TableIcon,
+    gradient: 'from-blue-500 to-cyan-600',
+    features: ['Resizing', 'Resizing Icons', 'Resizing Types', 'Resizing Directions'],
+  },
+  {
+    id: 'single-selection-table',
+    title: 'Single Selection Table',
+    description: 'Table with single selection functionality.',
+    href: 'table/single-selection-table',
+    icon: TableIcon,
+    gradient: 'from-blue-500 to-cyan-600',
+    features: [
+      'Single Selection',
+      'Single Selection Icons',
+      'Single Selection Types',
+      'Single Selection Directions',
+    ],
+  },
+
+  {
+    id: 'multi-selection-table',
+    title: 'Multi Selection Table',
+    description: 'Table with multi selection functionality.',
+    href: 'table/multi-selection-table',
+    icon: TableIcon,
+    gradient: 'from-blue-500 to-cyan-600',
+    features: [
+      'Multi Selection',
+      'Multi Selection Icons',
+      'Multi Selection Types',
+      'Multi Selection Directions',
+    ],
+  },
+  {
+    id: 'column-order-table',
+    title: 'Column Order Table',
+    description: 'Table with column order functionality.',
+    href: 'table/column-order-table',
+    icon: TableIcon,
+    gradient: 'from-blue-500 to-cyan-600',
+    features: [
+      'Column Order',
+      'Column Order Icons',
+      'Column Order Types',
+      'Column Order Directions',
+    ],
+  },
+  {
+    id: 'global-filter-table',
+    title: 'Global Filter Table',
+    description: 'Table with global filter functionality.',
+    href: 'table/global-filter-table',
+    icon: TableIcon,
+    gradient: 'from-blue-500 to-cyan-600',
+  },
+  {
+    id: 'column-visibility-table',
+    title: 'Column Visibility Table',
+    description: 'Table with column visibility functionality.',
+    href: 'table/column-visibility-table',
+    icon: TableIcon,
+    gradient: 'from-blue-500 to-cyan-600',
+  },
+  {
+    id: 'column-filter-table',
+    title: 'Column Filter Table',
+    description: 'Table with column filter functionality.',
+    href: 'table/column-filter-table',
+    icon: TableIcon,
+    gradient: 'from-blue-500 to-cyan-600',
   },
   {
     id: 'advanced-table',
@@ -103,7 +205,7 @@ export default function Page() {
       description="Advanced table components with sorting, filtering, and interactive features"
     >
       <div className="p-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto ">
           {tableDemos.map(table => {
             return (
               <div
@@ -160,7 +262,7 @@ export default function Page() {
 
                   {/* Features */}
                   <div className="flex flex-wrap gap-1.5">
-                    {table.features.slice(0, 3).map((feature, index) => (
+                    {table.features?.slice(0, 3).map((feature, index) => (
                       <span
                         key={index}
                         className="px-2 py-1 text-xs bg-muted text-muted-foreground rounded transition-colors duration-300 group-hover:bg-muted/80"

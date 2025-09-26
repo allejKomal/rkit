@@ -9,11 +9,15 @@ import TableWrapper from '@/components/hoc/table-wrapper';
 
 function Page() {
   return (
-    <TableWrapper title="Basic Table">
+    <TableWrapper title="Resizing Table">
       <TableEditor
         columns={superbikeColumns}
         data={superbikeData}
-        config={{ pageSize: superbikeData.length }}
+        config={{
+          pageSize: 15,
+          enableColumnResizing: true,
+          enablePagination: true,
+        }}
       />
     </TableWrapper>
   );
@@ -26,17 +30,25 @@ export const superbikeColumns: ExtendedColumnDef<Superbike>[] = [
     id: 'id',
     header: 'ID',
     accessorKey: 'id',
-    size: 40,
+    size: 80,
   },
   {
     id: 'brand',
     header: 'Brand',
     accessorKey: 'brand',
+    enableResizing: true,
+    size: 170,
+    minSize: 150,
+    maxSize: 250,
   },
   {
     id: 'model',
     header: 'Model',
     accessorKey: 'model',
+    enableResizing: true,
+    size: 160,
+    minSize: 150,
+    maxSize: 200,
   },
   {
     id: 'engine',
@@ -47,19 +59,28 @@ export const superbikeColumns: ExtendedColumnDef<Superbike>[] = [
     id: 'power',
     header: 'Power',
     accessorKey: 'power',
-    size: 100,
+    enableResizing: true,
+    size: 120,
+    minSize: 100,
+    maxSize: 200,
   },
   {
     id: 'torque',
     header: 'Torque',
     accessorKey: 'torque',
-    size: 100,
+    enableResizing: true,
+    size: 110,
+    minSize: 100,
+    maxSize: 200,
   },
   {
     id: 'topSpeed',
     header: 'Top Speed',
     accessorKey: 'topSpeed',
-    size: 100,
+    size: 160,
+    minSize: 100,
+    maxSize: 200,
+    enableResizing: true,
   },
   {
     id: 'weight',

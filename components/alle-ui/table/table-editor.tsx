@@ -45,6 +45,7 @@ import { cn } from '@/lib/utils';
 import DraggableCell from './components/draggable-cell';
 import { FilterPills } from './components/filter-pill';
 import Header from './components/header';
+import { DataTablePagination } from './components/pagination';
 import { ViewColumnsDropdown } from './components/view-columns-dropdown';
 import { ExtendedColumnDef } from './types/exnteded-column-def';
 import { cellFilterFunction } from './utils/cell-filter-function';
@@ -53,41 +54,73 @@ import { customFilterFunctions } from './utils/custom-filter-functions';
 
 export type TableEditorConfig<TData> = {
   debugTable?: boolean;
-  enableRowSelection?: boolean;
-  enableGlobalFilter?: boolean;
-  enableColumnFilter?: boolean;
-  enableColumnPinning?: boolean;
-  enableColumnVisibility?: boolean;
-  enableSorting?: boolean;
-  globalFilterFn?: FilterFnOption<TData>;
-  enableMultiRowSelection?: boolean;
-  initialColumnVisibility?: VisibilityState;
+  /**
+   * Enable pagination
+   */
+  enablePagination?: boolean;
   pageSize?: number;
   pageIndex?: number;
-  sorting?: SortingState;
-  rowSelection?: RowSelectionState;
-  rowSelectionId?: string;
-  columnOrder?: string[];
-  columnFilters?: ColumnFiltersState;
-  columnPinning?: ColumnPinningState;
-  columnSizing?: ColumnSizingState;
-  filterFn?: FilterFnOption<TData>;
-  globalFilter?: string;
-  columnResizeMode?: 'onChange' | 'onEnd';
-  columnResizeDirection?: 'ltr' | 'rtl';
-  enableColumnResizing?: boolean;
-  renderSingleSelection?: (row: Row<TData>) => React.ReactNode;
-  renderMultiSelection?: (row: Row<TData>) => React.ReactNode;
   onPageSizeChange?: (pageSize: number) => void;
   onPageIndexChange?: (pageIndex: number) => void;
-  onSortingChange?: (sorting: SortingState) => void;
+  /**
+   * Enable pagination
+   */
+  enableSingleRowSelection?: boolean;
+  rowSelection?: RowSelectionState;
+  rowSelectionId?: string;
+  renderSingleSelection?: (row: Row<TData>) => React.ReactNode;
   onRowSelectionChange?: (rowSelection: RowSelectionState) => void;
-  onColumnOrderChange?: (columnOrder: string[]) => void;
+  /**
+   * Enable multi row selection
+   */
+  enableMultiRowSelection?: boolean;
+  renderMultiSelection?: (row: Row<TData>) => React.ReactNode;
+  /**
+   * Enable column pinning
+   */
+  enableColumnPinning?: boolean;
+  columnPinning?: ColumnPinningState;
   onColumnPinningChange?: (columnPinning: ColumnPinningState) => void;
-  onColumnFiltersChange?: (columnFilters: ColumnFiltersState) => void;
-  onColumnVisibilityChange?: (columnVisibility: VisibilityState) => void;
+  /**
+   * Enable sorting
+   */
+  enableSorting?: boolean;
+  sorting?: SortingState;
+  onSortingChange?: (sorting: SortingState) => void;
+  /**
+   * Enable column resizing
+   */
+  enableColumnResizing?: boolean;
+  columnSizing?: ColumnSizingState;
+  columnResizeMode?: 'onChange' | 'onEnd';
+  columnResizeDirection?: 'ltr' | 'rtl';
   onColumnSizingChange?: (columnSizing: ColumnSizingState) => void;
+  /**
+   * Enable column order
+   */
+  enableColumnOrder?: boolean;
+  columnOrder?: string[];
+  onColumnOrderChange?: (columnOrder: string[]) => void;
+  /**
+   * Enable global filter
+   */
+  enableGlobalFilter?: boolean;
+  globalFilterFn?: FilterFnOption<TData>;
   onGlobalFilterChange?: (globalFilter: string) => void;
+  globalFilter?: string;
+  /**
+   * Enable column visibility
+   */
+  enableColumnVisibility?: boolean;
+  initialColumnVisibility?: VisibilityState;
+  onColumnVisibilityChange?: (columnVisibility: VisibilityState) => void;
+  /**
+   * Enable column filter
+   */
+  enableColumnFilter?: boolean;
+  onColumnFiltersChange?: (columnFilters: ColumnFiltersState) => void;
+  columnFilters?: ColumnFiltersState;
+  filterFn?: FilterFnOption<TData>;
 };
 
 interface TableEditorProps<TData> {
@@ -110,13 +143,15 @@ function TableEditor<TData>({ config, data, columns }: TableEditorProps<TData>) 
   );
   const [columnPinning, setColumnPinning] = useState<ColumnPinningState>(
     config?.columnPinning || {
-      left: ['select', 'engine'],
-      right: ['fuelType'],
+      left: [],
+      right: [],
     }
   );
   const [columnOrder, setColumnOrder] = React.useState<string[]>(() => {
-    const order = config?.columnOrder || columns.map(c => c.id!);
-    if (config?.enableRowSelection) {
+    const order = config?.enableColumnOrder
+      ? config?.columnOrder || columns.map(c => c.id!)
+      : columns.map(c => c.id!);
+    if (config?.enableSingleRowSelection || config?.enableMultiRowSelection) {
       return ['select', ...order];
     }
     return order;
@@ -142,7 +177,7 @@ function TableEditor<TData>({ config, data, columns }: TableEditorProps<TData>) 
   );
 
   const dynamicColumns: ExtendedColumnDef<TData>[] =
-    config?.enableRowSelection || config?.enableMultiRowSelection
+    config?.enableSingleRowSelection || config?.enableMultiRowSelection
       ? [
           {
             id: 'select',
@@ -197,7 +232,11 @@ function TableEditor<TData>({ config, data, columns }: TableEditorProps<TData>) 
             column =>
               ({
                 ...column,
+                enablePinning: column.enablePinning || false,
                 enableSorting: column.enableSorting || false,
+                enableResizing: column.enableResizing || false,
+                enableHiding: column.enableHiding || false,
+                enableColumnFilter: column.enableColumnFilter || false,
                 filterFn: cellFilterFunction<TData>,
                 header: ({ column: col }: { column: Column<TData, unknown> }) => (
                   <Header
@@ -206,6 +245,7 @@ function TableEditor<TData>({ config, data, columns }: TableEditorProps<TData>) 
                     title={typeof column.header === 'string' ? column.header : 'Column'}
                     canMove={true}
                     activeId={activeId}
+                    headerAlign={column.headerAlign}
                   />
                 ),
               }) as ExtendedColumnDef<TData>
@@ -215,7 +255,11 @@ function TableEditor<TData>({ config, data, columns }: TableEditorProps<TData>) 
           column =>
             ({
               ...column,
+              enablePinning: column.enablePinning || false,
               enableSorting: column.enableSorting || false,
+              enableResizing: column.enableResizing || false,
+              enableHiding: column.enableHiding || false,
+              enableColumnFilter: column.enableColumnFilter || false,
               filterFn: cellFilterFunction<TData>,
               header: ({ column: col }: { column: Column<TData, unknown> }) => (
                 <Header
@@ -224,6 +268,7 @@ function TableEditor<TData>({ config, data, columns }: TableEditorProps<TData>) 
                   title={typeof column.header === 'string' ? column.header : 'Column'}
                   canMove={true}
                   activeId={activeId}
+                  headerAlign={column.headerAlign}
                 />
               ),
             }) as ExtendedColumnDef<TData>
@@ -387,13 +432,15 @@ function TableEditor<TData>({ config, data, columns }: TableEditorProps<TData>) 
     onColumnVisibilityChange: handleColumnVisibilityChange,
     onColumnSizingChange: handleColumnSizingChange,
     onGlobalFilterChange: handleGlobalFilterChange,
-    globalFilterFn: config?.globalFilterFn as FilterFnOption<TData>,
+    globalFilterFn: config?.enableGlobalFilter
+      ? (config?.globalFilterFn as FilterFnOption<TData>) || 'includesString'
+      : undefined,
     debugTable: config?.debugTable,
   });
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center gap-4 mb-4">
+    <div className="flex flex-col gap-4 h-full">
+      <div className="flex items-center gap-4">
         {config?.enableColumnVisibility && <ViewColumnsDropdown table={table} />}
         {config?.enableGlobalFilter && (
           <>
@@ -564,6 +611,7 @@ function TableEditor<TData>({ config, data, columns }: TableEditorProps<TData>) 
           </table>
         </div>
       </DndContext>
+      {config?.enablePagination && <DataTablePagination config={config} table={table} />}{' '}
     </div>
   );
 }

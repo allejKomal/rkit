@@ -3,15 +3,15 @@ import React, { useMemo, useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Column } from '@tanstack/react-table';
-import { ArrowDown, ArrowUp, ChevronsUpDown, GripVertical, Pin } from 'lucide-react';
+import { ArrowDown, ArrowUp, ChevronsRight, ChevronsUpDown, GripVertical, Pin } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
@@ -20,7 +20,6 @@ import { TableEditorConfig } from '../table-editor';
 import FilterDropdownOption from './filter-dropdown-option';
 import HideDropdownOption from './hide-dropdown-option';
 import PinDropdownOption from './pin-dropdown-option';
-import SortDropdownOption from './sort-dropdown-option';
 
 interface HeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
   config?: TableEditorConfig<TData>;
@@ -28,6 +27,7 @@ interface HeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement
   title: string;
   canMove: boolean;
   activeId?: string | null;
+  headerAlign?: 'left' | 'center' | 'right';
 }
 
 function Header<TData, TValue>({
@@ -37,22 +37,33 @@ function Header<TData, TValue>({
   className,
   canMove,
   activeId,
+  headerAlign = 'left',
 }: HeaderProps<TData, TValue>) {
   const [isInitialized, setIsInitialized] = React.useState(false);
+  const currentFilter = column.getFilterValue() as { value?: string; type?: string } | undefined;
+  const [filterValue, setFilterValue] = useState<string>('');
+
+  const [filterOpen, setFilterOpen] = useState<boolean>(false);
+  const currentFilterValue = currentFilter?.value || '';
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterValue(e.target.value);
+  };
+
+  React.useEffect(() => {
+    if (currentFilterValue && !isInitialized) {
+      setFilterValue(currentFilterValue);
+      setIsInitialized(true);
+    }
+  }, [currentFilterValue, isInitialized, setFilterValue, setIsInitialized]);
 
   const [filter, setFilter] = useState<string>('contains');
-  const [filterValue, setFilterValue] = useState<string>('');
   const [dateValue, setDateValue] = useState<Date | null>(null);
   const [dateRangeValue, setDateRangeValue] = useState<
     { from: Date | undefined; to: Date | undefined } | undefined
   >(undefined);
 
-  // Get current filter value from column
-
-  // Initialize filterValue with current filter value only when dropdown opens
   const dropdownTriggerRef = React.useRef<HTMLButtonElement | null>(null);
-
-  // Handle input changes
 
   const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
     id: column.id,
@@ -68,8 +79,22 @@ function Header<TData, TValue>({
   };
 
   const showDropdown = useMemo(() => {
-    return config?.sorting || false;
-  }, [config]);
+    return (
+      (config?.enableSorting && column.getCanSort()) ||
+      (config?.enableColumnPinning && column.getCanPin()) ||
+      (config?.enableColumnResizing && column.getCanResize()) ||
+      (config?.enableColumnVisibility && column.getCanHide()) ||
+      (config?.enableColumnFilter && column.getCanFilter()) ||
+      false
+    );
+  }, [
+    column,
+    config?.enableSorting,
+    config?.enableColumnPinning,
+    config?.enableColumnResizing,
+    config?.enableColumnVisibility,
+    config?.enableColumnFilter,
+  ]);
 
   if (!showDropdown) {
     return (
@@ -89,7 +114,7 @@ function Header<TData, TValue>({
   return (
     <div
       className={cn(
-        'flex items-center justify-between gap-2 group',
+        'flex items-center justify-between gap-2 group w-full',
         config?.enableMultiRowSelection &&
           isDragging &&
           'opacity-100 bg-transparent -my-6 py-6 -mx-2 px-2 border-b shadow-lg',
@@ -119,29 +144,59 @@ function Header<TData, TValue>({
         <DropdownMenuTrigger
           ref={dropdownTriggerRef}
           className={cn(
-            'inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
+            'inline-flex items-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
             'hover:bg-accent hover:text-accent-foreground',
-            'h-8 px-3 text-sm',
+            'h-8 px-3 text-sm w-full',
             'data-[state=open]:bg-accent -ml-3',
-            (column.getFilterValue() as unknown as boolean) && 'bg-blue-100 dark:bg-blue-900'
+            (column.getFilterValue() as unknown as boolean) && 'bg-blue-100 dark:bg-blue-900',
+            headerAlign === 'center'
+              ? 'justify-center'
+              : headerAlign === 'right'
+                ? 'justify-end'
+                : 'justify-start'
           )}
         >
           <span>{title}</span>
-          {column.getIsSorted() === 'desc' ? (
-            <ArrowDown className="ml-2 h-4 w-4" />
-          ) : column.getIsSorted() === 'asc' ? (
-            <ArrowUp className="ml-2 h-4 w-4" />
-          ) : (
-            <ChevronsUpDown className="ml-2 h-4 w-4" />
+          {config?.enableSorting &&
+            (column.getIsSorted() === 'desc' ? (
+              <ArrowDown className="ml-2 h-4 w-4" />
+            ) : column.getIsSorted() === 'asc' ? (
+              <ArrowUp className="ml-2 h-4 w-4" />
+            ) : (
+              <ChevronsUpDown className="ml-2 h-4 w-4" />
+            ))}
+          {config?.enableColumnVisibility && column.getCanHide() && (
+            <ChevronsUpDown className="ml-2 size-4  " />
           )}
+          {config?.enableColumnFilter && column.getCanFilter() && (
+            <ChevronsUpDown className="ml-2 size-4  " />
+          )}
+
           {(column.getFilterValue() as unknown as boolean) && (
             <div className="ml-1 w-2 h-2 bg-blue-500 rounded-full" />
           )}
-          {column.getIsPinned() && <Pin className="ml-1 h-3 w-3 text-blue-500" />}
+          {config?.enableColumnPinning && column.getIsPinned() && <Pin className="ml-1 h-3 w-3" />}
+          {config?.enableColumnResizing && column.getCanResize() && (
+            <ChevronsRight className="ml-auto -mr-6 h-4 w-4" />
+          )}
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="start">
-          <SortDropdownOption column={column} config={config || {}} />
+          {config?.enableSorting && (
+            <>
+              <DropdownMenuLabel>Sort</DropdownMenuLabel>
+              <DropdownMenuGroup>
+                <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
+                  <ArrowUp />
+                  Asc
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
+                  <ArrowDown />
+                  Desc
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </>
+          )}
           <FilterDropdownOption
             column={column}
             config={config || {}}
@@ -157,7 +212,7 @@ function Header<TData, TValue>({
             setDateRangeValue={setDateRangeValue}
             dropdownTriggerRef={dropdownTriggerRef}
           />
-          <DropdownMenuLabel>Quick Filters</DropdownMenuLabel>
+          {/* <DropdownMenuLabel>Quick Filters</DropdownMenuLabel>
           <DropdownMenuItem onClick={() => column.setFilterValue({ type: 'isEmpty', value: '' })}>
             Show Empty
           </DropdownMenuItem>
@@ -166,8 +221,8 @@ function Header<TData, TValue>({
           >
             Show Non-Empty
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator /> */}
+          {/* <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
             onClick={() => {
               column.setFilterValue(undefined);
@@ -181,14 +236,15 @@ function Header<TData, TValue>({
           >
             Clear Filter
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
-
-          <PinDropdownOption column={column} config={config || {}} />
+          <DropdownMenuSeparator /> */}
+          {config?.enableColumnPinning && column.getCanPin() && (
+            <PinDropdownOption column={column} config={config || {}} />
+          )}
           <HideDropdownOption column={column} config={config || {}} />
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {canMove && (
+      {config?.enableColumnOrder && canMove && (
         <Button
           variant="ghost"
           size="iconsm"

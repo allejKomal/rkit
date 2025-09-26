@@ -9,11 +9,15 @@ import TableWrapper from '@/components/hoc/table-wrapper';
 
 function Page() {
   return (
-    <TableWrapper title="Basic Table">
+    <TableWrapper title="Column Visibility Table">
       <TableEditor
         columns={superbikeColumns}
         data={superbikeData}
-        config={{ pageSize: superbikeData.length }}
+        config={{
+          pageSize: 15,
+          enablePagination: true,
+          enableColumnVisibility: true,
+        }}
       />
     </TableWrapper>
   );
@@ -47,77 +51,90 @@ export const superbikeColumns: ExtendedColumnDef<Superbike>[] = [
     id: 'power',
     header: 'Power',
     accessorKey: 'power',
-    size: 100,
+    size: 120,
+    enableHiding: true,
   },
   {
     id: 'torque',
     header: 'Torque',
     accessorKey: 'torque',
-    size: 100,
+    size: 120,
+    enableHiding: true,
   },
   {
     id: 'topSpeed',
     header: 'Top Speed',
     accessorKey: 'topSpeed',
     size: 100,
+    enableHiding: true,
   },
   {
     id: 'weight',
     header: 'Weight',
     accessorKey: 'weight',
-    size: 100,
+    size: 120,
+    enableHiding: true,
   },
   {
     id: 'seatHeight',
     header: 'Seat Height',
     accessorKey: 'seatHeight',
     size: 100,
+    enableHiding: true,
   },
   {
     id: 'fuelCapacity',
     header: 'Fuel Capacity',
     accessorKey: 'fuelCapacity',
     size: 100,
+    enableHiding: true,
   },
   {
     id: 'mileage',
     header: 'Mileage',
     accessorKey: 'mileage',
     size: 100,
+    enableHiding: true,
   },
   {
     id: 'price',
     header: 'Price',
     accessorKey: 'price',
     size: 100,
+    enableHiding: true,
   },
   {
     id: 'year',
     header: 'Year',
     accessorKey: 'year',
     size: 100,
+    enableHiding: true,
   },
   {
     id: 'status',
     header: 'Status',
     accessorKey: 'status',
-    size: 100,
+    size: 120,
+    enableHiding: true,
   },
   {
     id: 'type',
     header: 'Type',
     accessorKey: 'type',
     size: 200,
+    enableHiding: true,
   },
   {
     id: 'transmission',
     header: 'Transmission',
     accessorKey: 'transmission',
+    enableHiding: true,
   },
   {
     id: 'coolingSystem',
     header: 'Cooling System',
     accessorKey: 'coolingSystem',
+    enableHiding: true,
   },
   {
     id: 'abs',
@@ -125,11 +142,13 @@ export const superbikeColumns: ExtendedColumnDef<Superbike>[] = [
     accessorKey: 'abs',
     cell: info => (info.getValue() ? 'Yes' : 'No'),
     size: 60,
+    enableHiding: true,
   },
   {
     id: 'ridingModes',
     header: 'Riding Modes',
     accessorKey: 'ridingModes',
     size: 200,
+    enableHiding: true,
   },
 ];

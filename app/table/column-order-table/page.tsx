@@ -9,11 +9,15 @@ import TableWrapper from '@/components/hoc/table-wrapper';
 
 function Page() {
   return (
-    <TableWrapper title="Basic Table">
+    <TableWrapper title="Column Order Table">
       <TableEditor
         columns={superbikeColumns}
         data={superbikeData}
-        config={{ pageSize: superbikeData.length }}
+        config={{
+          pageSize: superbikeData.length,
+          enableColumnOrder: true,
+          columnOrder: ['id', 'fuelCapacity', 'brand', 'model', 'engine', 'power', 'ridingModes'],
+        }}
       />
     </TableWrapper>
   );

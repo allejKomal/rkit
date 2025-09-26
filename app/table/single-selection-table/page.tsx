@@ -9,11 +9,15 @@ import TableWrapper from '@/components/hoc/table-wrapper';
 
 function Page() {
   return (
-    <TableWrapper title="Basic Table">
+    <TableWrapper title="Single Selection Table">
       <TableEditor
         columns={superbikeColumns}
         data={superbikeData}
-        config={{ pageSize: superbikeData.length }}
+        config={{
+          pageSize: 15,
+          enablePagination: true,
+          enableSingleRowSelection: true,
+        }}
       />
     </TableWrapper>
   );

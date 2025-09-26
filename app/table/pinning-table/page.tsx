@@ -9,11 +9,19 @@ import TableWrapper from '@/components/hoc/table-wrapper';
 
 function Page() {
   return (
-    <TableWrapper title="Basic Table">
+    <TableWrapper title="Pinning Table">
       <TableEditor
         columns={superbikeColumns}
         data={superbikeData}
-        config={{ pageSize: superbikeData.length }}
+        config={{
+          pageSize: 15,
+          enableColumnPinning: true,
+          enablePagination: true,
+          columnPinning: {
+            left: ['brand'],
+            right: ['year'],
+          },
+        }}
       />
     </TableWrapper>
   );
@@ -26,7 +34,7 @@ export const superbikeColumns: ExtendedColumnDef<Superbike>[] = [
     id: 'id',
     header: 'ID',
     accessorKey: 'id',
-    size: 40,
+    size: 80,
   },
   {
     id: 'brand',
@@ -37,6 +45,7 @@ export const superbikeColumns: ExtendedColumnDef<Superbike>[] = [
     id: 'model',
     header: 'Model',
     accessorKey: 'model',
+    enablePinning: true,
   },
   {
     id: 'engine',
@@ -48,18 +57,21 @@ export const superbikeColumns: ExtendedColumnDef<Superbike>[] = [
     header: 'Power',
     accessorKey: 'power',
     size: 100,
+    enablePinning: true,
   },
   {
     id: 'torque',
     header: 'Torque',
     accessorKey: 'torque',
     size: 100,
+    enablePinning: true,
   },
   {
     id: 'topSpeed',
     header: 'Top Speed',
     accessorKey: 'topSpeed',
-    size: 100,
+    size: 150,
+    enablePinning: true,
   },
   {
     id: 'weight',

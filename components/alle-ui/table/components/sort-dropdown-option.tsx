@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
+import {
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from '@radix-ui/react-dropdown-menu';
 import { DropdownMenuLabel } from '@radix-ui/react-dropdown-menu';
 import { Column } from '@tanstack/react-table';
 import { ArrowDown, ArrowUp } from 'lucide-react';
@@ -20,16 +24,16 @@ function SortDropdownOption<TData, TValue>({
       <DropdownMenuLabel>Sort</DropdownMenuLabel>
       <DropdownMenuGroup>
         <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-          <ArrowUp />
+          <ArrowUp className="mr-2 h-4 w-4" />
           Asc
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-          <ArrowDown />
+          <ArrowDown className="mr-2 h-4 w-4" />
           Desc
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
-      </>
+    </>
   );
 }
 

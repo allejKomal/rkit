@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 
 import { Superbike, superbikeData } from '@/components/alle-ui/table/data/data-01';
@@ -9,11 +7,11 @@ import TableWrapper from '@/components/hoc/table-wrapper';
 
 function Page() {
   return (
-    <TableWrapper title="Basic Table">
+    <TableWrapper title="Pagination Table">
       <TableEditor
         columns={superbikeColumns}
         data={superbikeData}
-        config={{ pageSize: superbikeData.length }}
+        config={{ pageSize: 15, enablePagination: true }}
       />
     </TableWrapper>
   );
@@ -26,22 +24,25 @@ export const superbikeColumns: ExtendedColumnDef<Superbike>[] = [
     id: 'id',
     header: 'ID',
     accessorKey: 'id',
-    size: 40,
+    size: 80,
   },
   {
     id: 'brand',
     header: 'Brand',
     accessorKey: 'brand',
+    size: 120,
   },
   {
     id: 'model',
     header: 'Model',
     accessorKey: 'model',
+    size: 140,
   },
   {
     id: 'engine',
     header: 'Engine',
     accessorKey: 'engine',
+    size: 160,
   },
   {
     id: 'power',
@@ -59,7 +60,7 @@ export const superbikeColumns: ExtendedColumnDef<Superbike>[] = [
     id: 'topSpeed',
     header: 'Top Speed',
     accessorKey: 'topSpeed',
-    size: 100,
+    size: 110,
   },
   {
     id: 'weight',
@@ -89,19 +90,19 @@ export const superbikeColumns: ExtendedColumnDef<Superbike>[] = [
     id: 'price',
     header: 'Price',
     accessorKey: 'price',
-    size: 100,
+    size: 120,
   },
   {
     id: 'year',
     header: 'Year',
     accessorKey: 'year',
-    size: 100,
+    size: 80,
   },
   {
     id: 'status',
     header: 'Status',
     accessorKey: 'status',
-    size: 100,
+    size: 140,
   },
   {
     id: 'type',
@@ -118,13 +119,13 @@ export const superbikeColumns: ExtendedColumnDef<Superbike>[] = [
     id: 'coolingSystem',
     header: 'Cooling System',
     accessorKey: 'coolingSystem',
+    size: 150,
   },
   {
     id: 'abs',
     header: 'ABS',
     accessorKey: 'abs',
-    cell: info => (info.getValue() ? 'Yes' : 'No'),
-    size: 60,
+    size: 100,
   },
   {
     id: 'ridingModes',
