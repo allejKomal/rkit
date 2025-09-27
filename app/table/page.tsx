@@ -1,17 +1,25 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+
 import Link from 'next/link';
 
 import {
-  BarChart3,
-  Database,
+  ChevronsUpDown,
+  Eye,
   Filter,
-  Grid,
+  LayoutList,
+  ListChecks,
+  MousePointer2,
+  MousePointerClick,
+  Move,
   Pin,
-  Settings,
+  Rows,
   Table as TableIcon,
-  Users,
 } from 'lucide-react';
 
 import PageWrapper from '@/components/hoc/page-wrapper';
+import { Button } from '@/components/ui/button';
 
 const tableDemos = [
   {
@@ -27,7 +35,7 @@ const tableDemos = [
     title: 'Pagination Table',
     description: 'Table with pagination functionality.',
     href: 'table/pagination-table',
-    icon: TableIcon,
+    icon: Rows,
     gradient: 'from-blue-500 to-cyan-600',
     features: ['Pagination', 'Page Size', 'Page Index', 'Page Count'],
   },
@@ -36,7 +44,7 @@ const tableDemos = [
     title: 'Sorting Table',
     description: 'Table with sorting functionality.',
     href: 'table/sorting-table',
-    icon: TableIcon,
+    icon: ChevronsUpDown,
     gradient: 'from-blue-500 to-cyan-600',
     features: ['Sorting', 'Sorting Icons', 'Sorting Types', 'Sorting Directions'],
   },
@@ -45,7 +53,7 @@ const tableDemos = [
     title: 'Pinning Table',
     description: 'Table with pinning functionality.',
     href: 'table/pinning-table',
-    icon: TableIcon,
+    icon: Pin,
     gradient: 'from-blue-500 to-cyan-600',
     features: ['Pinning', 'Pinning Icons', 'Pinning Types', 'Pinning Directions'],
   },
@@ -54,7 +62,7 @@ const tableDemos = [
     title: 'Resizing Table',
     description: 'Table with resizable functionality.',
     href: 'table/resizing-table',
-    icon: TableIcon,
+    icon: Move,
     gradient: 'from-blue-500 to-cyan-600',
     features: ['Resizing', 'Resizing Icons', 'Resizing Types', 'Resizing Directions'],
   },
@@ -63,50 +71,34 @@ const tableDemos = [
     title: 'Single Selection Table',
     description: 'Table with single selection functionality.',
     href: 'table/single-selection-table',
-    icon: TableIcon,
+    icon: MousePointerClick,
     gradient: 'from-blue-500 to-cyan-600',
-    features: [
-      'Single Selection',
-      'Single Selection Icons',
-      'Single Selection Types',
-      'Single Selection Directions',
-    ],
+    features: ['Single Selection', 'Icons', 'Types', 'Directions'],
   },
-
   {
     id: 'multi-selection-table',
     title: 'Multi Selection Table',
     description: 'Table with multi selection functionality.',
     href: 'table/multi-selection-table',
-    icon: TableIcon,
+    icon: MousePointer2,
     gradient: 'from-blue-500 to-cyan-600',
-    features: [
-      'Multi Selection',
-      'Multi Selection Icons',
-      'Multi Selection Types',
-      'Multi Selection Directions',
-    ],
+    features: ['Multi Selection', 'Icons', 'Types', 'Directions'],
   },
   {
     id: 'column-order-table',
     title: 'Column Order Table',
     description: 'Table with column order functionality.',
     href: 'table/column-order-table',
-    icon: TableIcon,
+    icon: ListChecks,
     gradient: 'from-blue-500 to-cyan-600',
-    features: [
-      'Column Order',
-      'Column Order Icons',
-      'Column Order Types',
-      'Column Order Directions',
-    ],
+    features: ['Column Order', 'Icons', 'Types', 'Directions'],
   },
   {
     id: 'global-filter-table',
     title: 'Global Filter Table',
     description: 'Table with global filter functionality.',
     href: 'table/global-filter-table',
-    icon: TableIcon,
+    icon: Filter,
     gradient: 'from-blue-500 to-cyan-600',
   },
   {
@@ -114,7 +106,7 @@ const tableDemos = [
     title: 'Column Visibility Table',
     description: 'Table with column visibility functionality.',
     href: 'table/column-visibility-table',
-    icon: TableIcon,
+    icon: Eye,
     gradient: 'from-blue-500 to-cyan-600',
   },
   {
@@ -122,82 +114,97 @@ const tableDemos = [
     title: 'Column Filter Table',
     description: 'Table with column filter functionality.',
     href: 'table/column-filter-table',
-    icon: TableIcon,
+    icon: LayoutList, // Indicates layout/columns
     gradient: 'from-blue-500 to-cyan-600',
-  },
-  {
-    id: 'advanced-table',
-    title: 'Advanced Data Table',
-    description:
-      'Full-featured table with multi-row selection, column pinning, and advanced filtering options.',
-    href: 'table/advanced-table',
-    icon: Database,
-    gradient: 'from-purple-500 to-pink-600',
-    features: ['Multi-Selection', 'Column Pinning', 'Advanced Filters', 'Global Search'],
-  },
-  {
-    id: 'employee-table',
-    title: 'Employee Management',
-    description:
-      'Employee data table with comprehensive filtering, sorting, and management capabilities.',
-    href: 'table/employee-table',
-    icon: Users,
-    gradient: 'from-emerald-500 to-teal-600',
-    features: ['Employee Data', 'Role Management', 'Status Tracking', 'Bulk Actions'],
-  },
-  {
-    id: 'analytics-table',
-    title: 'Analytics Dashboard',
-    description:
-      'Data analytics table with metrics, charts integration, and real-time data visualization.',
-    href: 'table/analytics-table',
-    icon: BarChart3,
-    gradient: 'from-orange-500 to-red-600',
-    features: ['Metrics Display', 'Chart Integration', 'Real-time Data', 'Export Options'],
-  },
-  {
-    id: 'filtered-table',
-    title: 'Advanced Filtering',
-    description:
-      'Table showcasing advanced filtering capabilities with multiple filter types and combinations.',
-    href: 'table/filtered-table',
-    icon: Filter,
-    gradient: 'from-indigo-500 to-purple-600',
-    features: ['Multiple Filters', 'Filter Pills', 'Date Ranges', 'Custom Filters'],
-  },
-  {
-    id: 'pinned-table',
-    title: 'Column Pinning',
-    description:
-      'Table demonstrating column pinning functionality for better data navigation and comparison.',
-    href: 'table/pinned-table',
-    icon: Pin,
-    gradient: 'from-rose-500 to-pink-600',
-    features: ['Left Pin', 'Right Pin', 'Sticky Headers', 'Fixed Columns'],
-  },
-  {
-    id: 'grid-table',
-    title: 'Grid Layout Table',
-    description:
-      'Table with grid-based layout and responsive design for optimal viewing on different devices.',
-    href: 'table/grid-table',
-    icon: Grid,
-    gradient: 'from-cyan-500 to-blue-600',
-    features: ['Grid Layout', 'Responsive Design', 'Mobile Optimized', 'Flexible Sizing'],
-  },
-  {
-    id: 'settings-table',
-    title: 'Configuration Table',
-    description:
-      'Settings and configuration table with toggle switches, dropdowns, and interactive controls.',
-    href: 'table/settings-table',
-    icon: Settings,
-    gradient: 'from-amber-500 to-orange-600',
-    features: ['Toggle Switches', 'Dropdown Controls', 'Settings Management', 'State Persistence'],
   },
 ];
 
+// Lazy-loaded iframe component with intersection observer
+function LazyIframe({
+  src,
+  title,
+  className,
+  style,
+}: {
+  src: string;
+  title: string;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const iframeRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      {
+        rootMargin: '100px', // Start loading 100px before it comes into view
+        threshold: 0.1,
+      }
+    );
+
+    if (iframeRef.current) {
+      observer.observe(iframeRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={iframeRef} className="relative w-full h-full">
+      {!isVisible && (
+        <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center">
+          <div className="text-muted-foreground text-sm">Loading preview...</div>
+        </div>
+      )}
+      {isVisible && (
+        <iframe
+          src={src}
+          className={className}
+          loading="lazy"
+          sandbox="allow-scripts allow-same-origin"
+          title={title}
+          style={style}
+          onLoad={() => setIsLoaded(true)}
+        />
+      )}
+      {isVisible && !isLoaded && (
+        <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center">
+          <div className="text-muted-foreground text-sm">Loading preview...</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Page() {
+  const [isPageLoaded, setIsPageLoaded] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(8); // Show only 8 initially
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  useEffect(() => {
+    // Mark page as loaded after initial render
+    const timer = setTimeout(() => setIsPageLoaded(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const loadMore = () => {
+    setIsLoadingMore(true);
+    setTimeout(() => {
+      setVisibleCount(prev => Math.min(prev + 8, tableDemos.length));
+      setIsLoadingMore(false);
+    }, 300);
+  };
+
+  const visibleDemos = tableDemos.slice(0, visibleCount);
+  const hasMore = visibleCount < tableDemos.length;
+
   return (
     <PageWrapper
       showBackButton
@@ -205,8 +212,27 @@ export default function Page() {
       description="Advanced table components with sorting, filtering, and interactive features"
     >
       <div className="p-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto ">
-          {tableDemos.map(table => {
+        {!isPageLoaded && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="group relative overflow-hidden rounded-lg border bg-card">
+                <div className="h-48 bg-muted animate-pulse" />
+                <div className="p-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 bg-muted rounded-lg animate-pulse" />
+                    <div className="h-4 bg-muted rounded animate-pulse w-32" />
+                  </div>
+                  <div className="h-3 bg-muted rounded animate-pulse w-full mb-2" />
+                  <div className="h-3 bg-muted rounded animate-pulse w-3/4" />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        <div
+          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto transition-opacity duration-300 ${isPageLoaded ? 'opacity-100' : 'opacity-0'}`}
+        >
+          {visibleDemos.map(table => {
             return (
               <div
                 key={table.id}
@@ -219,21 +245,19 @@ export default function Page() {
                     <span className="sr-only">View {table.title}</span>
                   </Link>
 
-                  {/* Iframe Container - Always visible */}
+                  {/* Iframe Container - Lazy loaded */}
                   <div className="absolute inset-0 overflow-hidden transition-transform duration-300 group-hover:scale-[1.02]">
-                    <iframe
+                    <LazyIframe
                       src={`/${table.href}`}
-                      className="w-full h-full border-0 pointer-events-none"
-                      loading="lazy"
-                      sandbox="allow-scripts allow-same-origin"
                       title={`Preview of ${table.title}`}
+                      className="w-full h-full border-0 pointer-events-none"
                       style={{
-                        width: '400%',
-                        height: '400%',
-                        transform: 'scale(0.25)',
+                        width: '300%',
+                        height: '300%',
+                        transform: 'scale(0.33)',
                         transformOrigin: 'top left',
-                        minWidth: '1200px',
-                        minHeight: '800px',
+                        minWidth: '900px',
+                        minHeight: '600px',
                       }}
                     />
                   </div>
@@ -276,6 +300,17 @@ export default function Page() {
             );
           })}
         </div>
+
+        {/* Load More Button */}
+        {hasMore && (
+          <div className="flex justify-center mt-8">
+            <Button onClick={loadMore} disabled={isLoadingMore} variant="outline">
+              {isLoadingMore
+                ? 'Loading...'
+                : `Load More (${tableDemos.length - visibleCount} remaining)`}
+            </Button>
+          </div>
+        )}
       </div>
     </PageWrapper>
   );

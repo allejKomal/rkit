@@ -81,7 +81,7 @@ function FilterDropdownOption<TData, TValue>({
     }
   }, [currentFilterValue, isInitialized, setFilterValue, setIsInitialized]);
 
-  if (!config.enableColumnFilter) return <></>;
+  if (!config.enableColumnFilter && !column.getCanFilter()) return <></>;
 
   return (
     <>
@@ -123,7 +123,7 @@ function FilterDropdownOption<TData, TValue>({
               column.setFilterValue(undefined);
             }
           }}
-          onEnter={e => {
+          onEnter={() => {
             // Apply filter when Enter is pressed
             if (filterValue.trim()) {
               const filterObj = {

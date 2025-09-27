@@ -43,12 +43,12 @@ function Header<TData, TValue>({
   const currentFilter = column.getFilterValue() as { value?: string; type?: string } | undefined;
   const [filterValue, setFilterValue] = useState<string>('');
 
-  const [filterOpen, setFilterOpen] = useState<boolean>(false);
+  // const [filterOpen, setFilterOpen] = useState<boolean>(false);
   const currentFilterValue = currentFilter?.value || '';
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterValue(e.target.value);
-  };
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // setFilterValue(e.target.value);
+  // };
 
   React.useEffect(() => {
     if (currentFilterValue && !isInitialized) {

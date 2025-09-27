@@ -1,6 +1,11 @@
 // Filter Pills Component
-import { Table } from "@tanstack/react-table";
-import { ColumnFilter } from "@tanstack/react-table";
+import { Table } from '@tanstack/react-table';
+import { ColumnFilter } from '@tanstack/react-table';
+
+interface FilterValue {
+  type?: string;
+  value?: unknown;
+}
 
 export function FilterPills<TData>({ table }: { table: Table<TData> }) {
   const activeFilters = table.getState().columnFilters;
@@ -38,7 +43,7 @@ export function FilterPills<TData>({ table }: { table: Table<TData> }) {
         const column = table.getColumn(filter.id);
         if (!column) return null;
 
-        const filterValue = filter.value;
+        const filterValue = filter.value as FilterValue;
         const filterType = filterValue?.type || 'contains';
         const filterText =
           typeof filterValue === 'object' && filterValue?.value
@@ -60,7 +65,7 @@ export function FilterPills<TData>({ table }: { table: Table<TData> }) {
             <span className="text-xs bg-green-200 dark:bg-green-800 px-2 py-0.5 rounded">
               {filterType}
             </span>
-            <span>"{filterText}"</span>
+            <span>&quot;{filterText}&quot;</span>
             <button
               onClick={() => column.setFilterValue(undefined)}
               className="ml-1 hover:bg-green-200 dark:hover:bg-green-800 rounded-full p-0.5"
