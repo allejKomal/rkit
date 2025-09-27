@@ -159,25 +159,19 @@ function Header<TData, TValue>({
           <span>{title}</span>
           {config?.enableSorting &&
             (column.getIsSorted() === 'desc' ? (
-              <ArrowDown className="ml-2 h-4 w-4" />
+              <ArrowDown className="ml-2 h-4 w-4 flex-shrink-0" />
             ) : column.getIsSorted() === 'asc' ? (
-              <ArrowUp className="ml-2 h-4 w-4" />
+              <ArrowUp className="ml-2 h-4 w-4 flex-shrink-0" />
             ) : (
-              <ChevronsUpDown className="ml-2 h-4 w-4" />
+              <ChevronsUpDown className="ml-2 h-4 w-4 flex-shrink-0" />
             ))}
-          {config?.enableColumnVisibility && column.getCanHide() && (
-            <ChevronsUpDown className="ml-2 size-4  " />
-          )}
-          {config?.enableColumnFilter && column.getCanFilter() && (
-            <ChevronsUpDown className="ml-2 size-4  " />
-          )}
 
           {(column.getFilterValue() as unknown as boolean) && (
-            <div className="ml-1 w-2 h-2 bg-blue-500 rounded-full" />
+            <div className="ml-1 w-3 h-3 bg-blue-500 rounded-full flex-shrink-0" />
           )}
-          {config?.enableColumnPinning && column.getIsPinned() && <Pin className="ml-1 h-3 w-3" />}
+          {config?.enableColumnPinning && column.getIsPinned() && <Pin className="ml-1 h-4 w-4 flex-shrink-0" />}
           {config?.enableColumnResizing && column.getCanResize() && (
-            <ChevronsRight className="ml-auto -mr-6 h-4 w-4" />
+            <ChevronsRight className="ml-auto -mr-6 h-4 w-4 flex-shrink-0" />
           )}
         </DropdownMenuTrigger>
 
@@ -187,11 +181,11 @@ function Header<TData, TValue>({
               <DropdownMenuLabel>Sort</DropdownMenuLabel>
               <DropdownMenuGroup>
                 <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-                  <ArrowUp />
+                  <ArrowUp className="h-4 w-4" />
                   Asc
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-                  <ArrowDown />
+                  <ArrowDown className="h-4 w-4" />
                   Desc
                 </DropdownMenuItem>
               </DropdownMenuGroup>

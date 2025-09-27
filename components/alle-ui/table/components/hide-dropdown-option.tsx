@@ -19,7 +19,7 @@ function HideDropdownOption<TData, TValue>({
     <>
       <DropdownMenuLabel>Visibility</DropdownMenuLabel>
       <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-        <EyeOff />
+        <EyeOff className="mr-2 h-4 w-4" />
         Hide
       </DropdownMenuItem>
     </>
