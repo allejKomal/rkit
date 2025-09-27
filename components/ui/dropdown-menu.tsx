@@ -1,16 +1,14 @@
 'use client';
 
 import * as React from 'react';
+import { DateRange } from 'react-day-picker';
 
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
 import { format } from 'date-fns';
 import { CalendarIcon, CheckIcon, ChevronRightIcon, CircleIcon, Minus } from 'lucide-react';
-import { DateRange } from 'react-day-picker';
 
 import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
-
-import { Input } from './input';
 
 // Context for managing input state across dropdown components
 const DropdownMenuContext = React.createContext<{
@@ -247,7 +245,6 @@ function DropdownMenuCalendarItem({
   onChange,
   placeholder = 'Pick a date',
   className,
-  ...props
 }: React.ComponentProps<typeof DropdownMenuItem> & {
   value?: Date | null;
   onChange?: (date: Date | null) => void;
@@ -261,7 +258,7 @@ function DropdownMenuCalendarItem({
         <CalendarIcon className="mr-2 h-4 w-4" />
         {value ? format(value, 'd MMM yyyy') : placeholder}
       </DropdownMenuSubTrigger>
-      <DropdownMenuSubContent className="w-auto p-0">
+      <DropdownMenuSubContent className={cn('w-auto p-0', className)}>
         <Calendar
           mode="single"
           selected={value || undefined}
@@ -281,7 +278,6 @@ function DropdownMenuRangePickerItem({
   onChange,
   placeholder = 'Pick a date range',
   className,
-  ...props
 }: React.ComponentProps<typeof DropdownMenuItem> & {
   value?: DateRange | undefined;
   onChange?: (range: DateRange | undefined) => void;
@@ -301,7 +297,7 @@ function DropdownMenuRangePickerItem({
         <CalendarIcon className="mr-2 h-4 w-4" />
         {formatRange(value)}
       </DropdownMenuSubTrigger>
-      <DropdownMenuSubContent className="w-auto p-0">
+      <DropdownMenuSubContent className={cn('w-auto p-0', className)}>
         <Calendar
           mode="range"
           selected={value}

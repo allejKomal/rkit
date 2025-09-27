@@ -14,8 +14,8 @@ import {
   LucideIcon,
   MessageSquare,
   Settings,
-  Table,
   Square,
+  Table,
   User,
   Users,
 } from 'lucide-react';

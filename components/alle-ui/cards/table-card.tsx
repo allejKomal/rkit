@@ -22,7 +22,7 @@ function TableCard() {
       </CardHeader>
       <Separator />
       <CardContent className="flex flex-col items-start gap-2">
-        {data.map((item, index) => (
+        {data.map((item) => (
           <div
             key={item.value}
             className="flex items-center gap-2 text-muted-foreground text-sm font-medium [&_svg]:size-4"
