@@ -1,14 +1,32 @@
 'use client';
 
 import * as React from 'react';
+import { DateRange } from 'react-day-picker';
 
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
-import { CheckIcon, ChevronRightIcon, CircleIcon, Minus } from 'lucide-react';
+import { format } from 'date-fns';
+import { CalendarIcon, CheckIcon, ChevronRightIcon, CircleIcon, Minus } from 'lucide-react';
 
+import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 
+// Context for managing input state across dropdown components
+const DropdownMenuContext = React.createContext<{
+  inputFocused: boolean;
+  setInputFocused: (focused: boolean) => void;
+}>({
+  inputFocused: false,
+  setInputFocused: () => {},
+});
+
 function DropdownMenu({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
-  return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />;
+  const [inputFocused, setInputFocused] = React.useState(false);
+
+  return (
+    <DropdownMenuContext.Provider value={{ inputFocused, setInputFocused }}>
+      <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />
+    </DropdownMenuContext.Provider>
+  );
 }
 
 function DropdownMenuPortal({
@@ -26,13 +44,32 @@ function DropdownMenuTrigger({
 function DropdownMenuContent({
   className,
   sideOffset = 4,
+  enableFilter = true,
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Content> & {
+  enableFilter?: boolean;
+}) {
+  const { inputFocused } = React.useContext(DropdownMenuContext);
+
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}
+        onKeyDown={e => {
+          if (enableFilter) {
+            if (
+              inputFocused &&
+              e.key !== 'ArrowDown' &&
+              e.key !== 'ArrowUp' &&
+              e.key !== 'Enter' &&
+              e.key !== 'Escape'
+            ) {
+              // Allow typing when input is focused, but allow navigation keys
+              e.stopPropagation();
+            }
+          }
+        }}
         className={cn(
           'bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border p-1 shadow-md',
           className
@@ -93,6 +130,188 @@ function DropdownMenuCheckboxItem({
       </span>
       {children}
     </DropdownMenuPrimitive.CheckboxItem>
+  );
+}
+function DropdownMenuInputItem({
+  className,
+  onFocus,
+  onBlur,
+  onKeyDown,
+  onEnter,
+  ...props
+}: React.ComponentProps<'input'> & {
+  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onEnter?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+}) {
+  const { setInputFocused } = React.useContext(DropdownMenuContext);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    setInputFocused(true);
+    onFocus?.(e);
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setInputFocused(false);
+    onBlur?.(e);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+
+      const dropdown =
+        e.currentTarget.closest('[role="menu"]') ||
+        e.currentTarget.closest('[data-radix-popper-content-wrapper]') ||
+        e.currentTarget.closest('[data-radix-dropdown-menu-content]');
+
+      if (!dropdown) return;
+
+      const focusableElements = Array.from(
+        dropdown.querySelectorAll('button, [role="menuitem"], [role="menuitemcheckbox"], input')
+      ).filter(el => {
+        return !(el.getAttribute('role') === 'menuitem' && el.querySelector('input'));
+      });
+
+      const currentIndex = focusableElements.indexOf(e.currentTarget);
+
+      let nextIndex;
+      if (e.key === 'ArrowDown') {
+        nextIndex = currentIndex + 1;
+        if (nextIndex >= focusableElements.length) nextIndex = 0;
+      } else {
+        nextIndex = currentIndex - 1;
+        if (nextIndex < 0) nextIndex = focusableElements.length - 1;
+      }
+
+      const nextElement = focusableElements[nextIndex] as HTMLElement;
+      if (nextElement && nextElement !== e.currentTarget) {
+        nextElement.focus();
+      }
+      return;
+    }
+
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      // Call custom onEnter handler if provided
+      if (onEnter) {
+        onEnter(e);
+      }
+      // Close dropdown by dispatching escape event
+      const escapeEvent = new KeyboardEvent('keydown', {
+        key: 'Escape',
+        code: 'Escape',
+        bubbles: true,
+        cancelable: true,
+      });
+      e.currentTarget.dispatchEvent(escapeEvent);
+      return;
+    }
+
+    e.stopPropagation();
+    onKeyDown?.(e);
+  };
+
+  return (
+    <DropdownMenuItem
+      className="p-0 focus:bg-transparent"
+      onSelect={e => e.preventDefault()}
+      onFocus={() => {
+        setTimeout(() => {
+          inputRef.current?.focus();
+        }, 0);
+      }}
+    >
+      <input
+        {...props}
+        ref={inputRef}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
+        onClick={e => e.stopPropagation()}
+        className={cn(
+          'w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-2 focus:ring-muted',
+          className
+        )}
+      />
+    </DropdownMenuItem>
+  );
+}
+
+function DropdownMenuCalendarItem({
+  value,
+  onChange,
+  placeholder = 'Pick a date',
+  className,
+}: React.ComponentProps<typeof DropdownMenuItem> & {
+  value?: Date | null;
+  onChange?: (date: Date | null) => void;
+  placeholder?: string;
+}) {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  return (
+    <DropdownMenuSub open={isOpen} onOpenChange={setIsOpen}>
+      <DropdownMenuSubTrigger>
+        <CalendarIcon className="mr-2 h-4 w-4" />
+        {value ? format(value, 'd MMM yyyy') : placeholder}
+      </DropdownMenuSubTrigger>
+      <DropdownMenuSubContent className={cn('w-auto p-0', className)}>
+        <Calendar
+          mode="single"
+          selected={value || undefined}
+          onSelect={selectedDate => {
+            onChange?.(selectedDate || null);
+            setIsOpen(false);
+          }}
+          initialFocus
+        />
+      </DropdownMenuSubContent>
+    </DropdownMenuSub>
+  );
+}
+
+function DropdownMenuRangePickerItem({
+  value,
+  onChange,
+  placeholder = 'Pick a date range',
+  className,
+}: React.ComponentProps<typeof DropdownMenuItem> & {
+  value?: DateRange | undefined;
+  onChange?: (range: DateRange | undefined) => void;
+  placeholder?: string;
+}) {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const formatRange = (range: DateRange | undefined) => {
+    if (!range?.from) return placeholder;
+    if (!range.to) return format(range.from, 'd MMM yyyy');
+    return `${format(range.from, 'd MMM yyyy')} - ${format(range.to, 'd MMM yyyy')}`;
+  };
+
+  return (
+    <DropdownMenuSub open={isOpen} onOpenChange={setIsOpen}>
+      <DropdownMenuSubTrigger>
+        <CalendarIcon className="mr-2 h-4 w-4" />
+        {formatRange(value)}
+      </DropdownMenuSubTrigger>
+      <DropdownMenuSubContent className={cn('w-auto p-0', className)}>
+        <Calendar
+          mode="range"
+          selected={value}
+          onSelect={range => {
+            onChange?.(range);
+            // Only close when we have a complete range (both from and to dates are different)
+            if (range?.from && range?.to && range.from.getTime() !== range.to.getTime()) {
+              setIsOpen(false);
+            }
+          }}
+          initialFocus
+        />
+      </DropdownMenuSubContent>
+    </DropdownMenuSub>
   );
 }
 
@@ -248,6 +467,9 @@ export {
   DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuItem,
+  DropdownMenuInputItem,
+  DropdownMenuCalendarItem,
+  DropdownMenuRangePickerItem,
   DropdownMenuCheckboxItem,
   DropdownMenuCheckboxIntermediateItem,
   DropdownMenuRadioGroup,

@@ -15,6 +15,7 @@ import {
   MessageSquare,
   Settings,
   Square,
+  Table,
   User,
   Users,
 } from 'lucide-react';
@@ -37,6 +38,7 @@ const iconColors: Record<string, string> = {
   testimonial: 'bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-900 dark:text-fuchsia-300',
   'time-line': 'bg-rose-100 text-rose-600 dark:bg-rose-900 dark:text-rose-300',
   cards: 'bg-violet-100 text-violet-600 dark:bg-violet-900 dark:text-violet-300',
+  table: 'bg-gray-100 text-gray-600 dark:bg-gray-900 dark:text-gray-300',
 };
 
 // Icon mapping for each route
@@ -55,6 +57,7 @@ const routeIcons: Record<string, LucideIcon> = {
   testimonial: MessageSquare,
   'time-line': Clock,
   cards: Square,
+  table: Table,
 };
 
 const renderComponentGrid = (components: typeof routeData) => {

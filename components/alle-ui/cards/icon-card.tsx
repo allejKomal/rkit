@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Clock10Icon, DollarSignIcon } from 'lucide-react';
+import { DollarSignIcon } from 'lucide-react';
 
-import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardHeader } from '@/components/ui/card';
 
 function IconCard() {
   return (
