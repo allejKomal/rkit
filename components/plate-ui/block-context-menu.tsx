@@ -22,6 +22,7 @@ import {
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
 import { useIsTouchDevice } from '@/hooks/use-is-touch-device';
+import { Template, templates } from './templates/template';
 
 type Value = 'askAI' | null;
 
@@ -54,6 +55,23 @@ export function BlockContextMenu({ children }: { children: React.ReactNode }) {
   const handleAlign = React.useCallback(
     (align: 'center' | 'left' | 'right') => {
       editor.getTransforms(BlockSelectionPlugin).blockSelection.setNodes({ align });
+    },
+    [editor]
+  );
+
+  const handleInsertTemplate = React.useCallback(
+    (template: Template) => {
+      const selectedNodes = editor.getApi(BlockSelectionPlugin).blockSelection.getNodes();
+      if (selectedNodes.length > 0) {
+        const [, firstPath] = selectedNodes[0];
+        editor.getTransforms(BlockSelectionPlugin).blockSelection.removeNodes();
+
+        template.content.forEach((node, index) => {
+          editor.tf.insertNodes(node, {
+            at: [firstPath[0] + index],
+          });
+        });
+      }
     },
     [editor]
   );
@@ -109,13 +127,6 @@ export function BlockContextMenu({ children }: { children: React.ReactNode }) {
           <ContextMenuGroup>
             <ContextMenuItem
               onClick={() => {
-                setValue('askAI');
-              }}
-            >
-              Ask AI
-            </ContextMenuItem>
-            <ContextMenuItem
-              onClick={() => {
                 editor.getTransforms(BlockSelectionPlugin).blockSelection.removeNodes();
                 editor.tf.focus();
               }}
@@ -164,6 +175,23 @@ export function BlockContextMenu({ children }: { children: React.ReactNode }) {
                 <ContextMenuItem onClick={() => handleAlign('left')}>Left</ContextMenuItem>
                 <ContextMenuItem onClick={() => handleAlign('center')}>Center</ContextMenuItem>
                 <ContextMenuItem onClick={() => handleAlign('right')}>Right</ContextMenuItem>
+              </ContextMenuSubContent>
+            </ContextMenuSub>
+          </ContextMenuGroup>
+          <ContextMenuGroup>
+            <ContextMenuSub>
+              <ContextMenuSubTrigger>Templates</ContextMenuSubTrigger>
+              <ContextMenuSubContent className="w-64">
+                {templates.map(template => (
+                  <ContextMenuItem
+                    key={template.id}
+                    onClick={() => handleInsertTemplate(template)}
+                    className="flex flex-col items-start gap-1 py-2"
+                  >
+                    <span className="font-medium">{template.name}</span>
+                    <span className="text-xs text-muted-foreground">{template.description}</span>
+                  </ContextMenuItem>
+                ))}
               </ContextMenuSubContent>
             </ContextMenuSub>
           </ContextMenuGroup>

@@ -30,6 +30,82 @@ function PageWrapper({
   description,
   showFooter = true,
 }: PageWrapperProps) {
+  // Check if we want a fixed header layout (when className includes h-screen)
+  const isFixedHeaderLayout = className.includes('h-screen');
+
+  if (isFixedHeaderLayout) {
+    return (
+      <div className={cn('bg-background flex flex-col', className)}>
+        {(showBackButton || title) && (
+          <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+            <div className="mx-auto px-6 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-4 w-full">
+                  {title && (
+                    <div>
+                      <h1 className="text-2xl font-semibold text-foreground">{title}</h1>
+                      {description && (
+                        <p className="text-sm text-muted-foreground mt-1">{description}</p>
+                      )}
+                    </div>
+                  )}
+                  {showBackButton && (
+                    <Link href={backButtonHref}>
+                      <Button variant="outline" size="sm">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        {backButtonLabel}
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {children}
+
+        {showFooter && (
+          <footer className="border-t bg-muted/30 mt-auto">
+            <div className="container mx-auto px-6 py-2">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="text-center md:text-left">
+                  <p className="text-sm text-muted-foreground">
+                    Created by{' '}
+                    <a
+                      href="https://github.com/allejkomal"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary hover:text-primary/80 transition-colors font-medium"
+                    >
+                      allejkomal
+                    </a>
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    A collection of reusable UI components and layouts
+                  </p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <a
+                    href="https://github.com/allejkomal/rkit"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <Github className="w-4 h-4" />
+                    View on GitHub
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </footer>
+        )}
+      </div>
+    );
+  }
+
+  // Default layout with ScrollArea
   return (
     <div>
       <ScrollArea className={cn('h-[100vh]', className)}>

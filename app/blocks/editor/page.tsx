@@ -9,9 +9,13 @@ export default function Page() {
       showBackButton
       title="Rich Text Editor"
       description="Advanced rich text editor with formatting, blocks, and collaboration features"
+      className="h-screen"
+      showFooter={false}
     >
-      <div className="h-full not-first:w-full">
-        <PlateEditor />
+      <div className="flex-1 overflow-hidden">
+        <div className="h-full overflow-y-auto">
+          <PlateEditor />
+        </div>
       </div>
     </PageWrapper>
   );
