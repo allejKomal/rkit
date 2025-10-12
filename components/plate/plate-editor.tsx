@@ -6,16 +6,18 @@ import { normalizeNodeId } from 'platejs';
 import { Plate, usePlateEditor } from 'platejs/react';
 
 import { Editor, EditorContainer } from '@/components/plate-ui/editor';
+import { FocusModeOverlay, WordCountDisplay } from '@/components/plate-ui/productivity-features';
+import { SettingsProvider, useSettings } from '@/components/plate-ui/settings-toolbar-button';
 import { hashValue } from '@/lib/content-utils';
 
 import { EditorKit } from './editor-kit';
 import { FileManagerProvider, useFileManager } from './file-manager-context';
 import { FileManagerSidebar } from './file-manager-sidebar';
-import { SettingsDialog } from './settings-dialog';
 import { SidebarTrigger } from './sidebar-trigger';
 
 const PlateEditorCore = React.memo(() => {
   const { currentFile, updateCurrentFileContent, currentFileId } = useFileManager();
+  const { editorWidth, fontSize, lineHeight, typewriterMode } = useSettings();
   const [isUpdating, setIsUpdating] = React.useState(false);
   const prevFileIdRef = React.useRef<string | null>(null);
   const updateTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
@@ -82,12 +84,23 @@ const PlateEditorCore = React.memo(() => {
     <>
       <Plate editor={editor} onChange={handleChange}>
         <EditorContainer>
-          <Editor variant="fullWidth" />
+          <Editor
+            variant={editorWidth}
+            style={{
+              fontSize: `${fontSize}px`,
+              lineHeight: lineHeight,
+              ...(typewriterMode && {
+                paddingTop: '50vh',
+                paddingBottom: '50vh',
+              }),
+            }}
+          />
         </EditorContainer>
-        <SettingsDialog />
+        <WordCountDisplay />
       </Plate>
       <SidebarTrigger />
       <FileManagerSidebar />
+      <FocusModeOverlay />
     </>
   );
 });
@@ -96,9 +109,11 @@ PlateEditorCore.displayName = 'PlateEditorCore';
 
 export function PlateEditor() {
   return (
-    <FileManagerProvider>
-      <PlateEditorCore />
-    </FileManagerProvider>
+    <SettingsProvider>
+      <FileManagerProvider>
+        <PlateEditorCore />
+      </FileManagerProvider>
+    </SettingsProvider>
   );
 }
 
