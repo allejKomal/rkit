@@ -169,7 +169,9 @@ function Header<TData, TValue>({
           {(column.getFilterValue() as unknown as boolean) && (
             <div className="ml-1 w-3 h-3 bg-blue-500 rounded-full flex-shrink-0" />
           )}
-          {config?.enableColumnPinning && column.getIsPinned() && <Pin className="ml-1 h-4 w-4 flex-shrink-0" />}
+          {config?.enableColumnPinning && column.getIsPinned() && (
+            <Pin className="ml-1 h-4 w-4 flex-shrink-0" />
+          )}
           {config?.enableColumnResizing && column.getCanResize() && (
             <ChevronsRight className="ml-auto -mr-6 h-4 w-4 flex-shrink-0" />
           )}

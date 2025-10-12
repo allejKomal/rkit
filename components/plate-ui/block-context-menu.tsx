@@ -22,6 +22,7 @@ import {
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
 import { useIsTouchDevice } from '@/hooks/use-is-touch-device';
+
 import { Template, templates } from './templates/template';
 
 type Value = 'askAI' | null;

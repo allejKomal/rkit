@@ -2,51 +2,103 @@
 
 import * as React from 'react';
 
-import { type Value, normalizeNodeId } from 'platejs';
+import { normalizeNodeId } from 'platejs';
 import { Plate, usePlateEditor } from 'platejs/react';
 
 import { Editor, EditorContainer } from '@/components/plate-ui/editor';
+import { hashValue } from '@/lib/content-utils';
 
 import { EditorKit } from './editor-kit';
+import { FileManagerProvider, useFileManager } from './file-manager-context';
+import { FileManagerSidebar } from './file-manager-sidebar';
 import { SettingsDialog } from './settings-dialog';
+import { SidebarTrigger } from './sidebar-trigger';
 
-const STORAGE_KEY = 'plate-editor-content';
-
-export function PlateEditor() {
-  const [initialValue] = React.useState<Value>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch (e) {
-          console.warn('Failed to parse saved value', e);
-        }
-      }
-    }
-    return [
-      {
-        children: [{ text: '' }],
-        type: 'h1',
-      },
-    ];
-  });
+const PlateEditorCore = React.memo(() => {
+  const { currentFile, updateCurrentFileContent, currentFileId } = useFileManager();
+  const [isUpdating, setIsUpdating] = React.useState(false);
+  const prevFileIdRef = React.useRef<string | null>(null);
+  const updateTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const contentHashRef = React.useRef<string>('');
 
   const editor = usePlateEditor({
     plugins: EditorKit,
-    value: initialValue,
+    value: currentFile?.content || [{ children: [{ text: '' }], type: 'h1' }],
   });
 
-  const handleChange = () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(editor.children));
-  };
+  // Update editor content when switching files
+  React.useEffect(() => {
+    if (currentFile && currentFileId && currentFileId !== prevFileIdRef.current) {
+      setIsUpdating(true);
+      prevFileIdRef.current = currentFileId;
+      contentHashRef.current = hashValue(currentFile.content);
+
+      // Use requestAnimationFrame for better performance
+      requestAnimationFrame(() => {
+        if (editor) {
+          try {
+            // Simple approach: directly replace children
+            editor.children = [...currentFile.content];
+
+            // Clear selection to prevent path errors
+            editor.selection = null;
+
+            // Clear history
+            if (editor.history) {
+              editor.history.undos = [];
+              editor.history.redos = [];
+            }
+          } catch (error) {
+            console.warn('Error updating editor content:', error);
+          }
+        }
+        setIsUpdating(false);
+      });
+    }
+  }, [currentFileId, currentFile, editor]);
+
+  const handleChange = React.useCallback(() => {
+    if (!isUpdating && editor && editor.children && currentFileId === prevFileIdRef.current) {
+      // Quick hash comparison to avoid unnecessary updates
+      const newHash = hashValue(editor.children);
+      if (newHash === contentHashRef.current) {
+        return; // Content hasn't actually changed
+      }
+      contentHashRef.current = newHash;
+
+      // Clear existing timeout
+      if (updateTimeoutRef.current) {
+        clearTimeout(updateTimeoutRef.current);
+      }
+
+      // Throttle updates to prevent lag during typing
+      updateTimeoutRef.current = setTimeout(() => {
+        updateCurrentFileContent(editor.children);
+      }, 100);
+    }
+  }, [editor, updateCurrentFileContent, currentFileId, isUpdating]);
+
   return (
-    <Plate editor={editor} onChange={handleChange}>
-      <EditorContainer>
-        <Editor variant="fullWidth" />
-      </EditorContainer>
-      <SettingsDialog />
-    </Plate>
+    <>
+      <Plate editor={editor} onChange={handleChange}>
+        <EditorContainer>
+          <Editor variant="fullWidth" />
+        </EditorContainer>
+        <SettingsDialog />
+      </Plate>
+      <SidebarTrigger />
+      <FileManagerSidebar />
+    </>
+  );
+});
+
+PlateEditorCore.displayName = 'PlateEditorCore';
+
+export function PlateEditor() {
+  return (
+    <FileManagerProvider>
+      <PlateEditorCore />
+    </FileManagerProvider>
   );
 }
 
